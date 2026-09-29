@@ -1,1 +1,461 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <meta name="description" content="Undangan Pernikahan Hadi & Riya">
+    <meta name="theme-color" content="#15110d">
+
+    <title>Hadi & Riya | Wedding Invitation</title>
+
+    <!-- GOOGLE FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="page-loading no-scroll">
+
+    <!-- =====================================================
+         LOADING
+    ====================================================== -->
+
+    <div id="page-loader">
+        <div class="loader-ring"></div>
+        <p>Hadi & Riya</p>
+    </div>
+
+
+    <!-- =====================================================
+         COVER / OPENING
+    ====================================================== -->
+
+    <section id="cover">
+
+        <div class="cover-overlay"></div>
+
+        <div class="cover-content">
+
+            <p class="small-title">THE WEDDING OF</p>
+
+            <h3 class="cover-date">12 • 12 • 2026</h3>
+
+            <h1>Hadi <span>&</span> Riya</h1>
+
+            <p class="cover-description">
+                Dengan penuh kebahagiaan,
+                kami mengundang Anda untuk
+                hadir di hari istimewa kami.
+            </p>
+
+            <button id="openInvitation" class="open-btn">
+                <span>BUKA UNDANGAN</span>
+            </button>
+
+        </div>
+
+        <div class="scroll-hint">
+            <span></span>
+            SCROLL
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main id="main-content">
+
+        <!-- MUSIC -->
+        <button id="musicButton" class="music-btn" aria-label="Musik">
+            ♪
+        </button>
+
+        <audio id="backgroundMusic" loop>
+            <source src="music/Ful.mp3" type="audio/mpeg">
+        </audio>
+
+
+        <!-- =================================================
+             HERO
+        ================================================== -->
+
+        <section class="hero-section">
+
+            <div class="decorative-circle"></div>
+
+            <div class="container">
+
+                <p class="section-label reveal">
+                    WE ARE GETTING MARRIED
+                </p>
+
+                <h2 class="script-title reveal delay-1">
+                    Hadi & Riya
+                </h2>
+
+                <div class="gold-line reveal delay-2"></div>
+
+                <p class="hero-text reveal delay-3">
+                    Dua hati, satu perjalanan,
+                    dan satu janji untuk selamanya.
+                </p>
+
+                <div class="hero-date reveal delay-4">
+                    12 . 12 . 2026
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             COUPLE
+        ================================================== -->
+
+        <section class="couple-section">
+
+            <div class="container">
+
+                <div class="section-heading reveal">
+                    <span>THE COUPLE</span>
+                    <h2>Our Story</h2>
+                </div>
+
+
+                <div class="couple-grid">
+
+                    <!-- HADI -->
+
+                    <div class="person-card reveal-left">
+
+                        <div class="photo-frame">
+                            <img
+                                src="img/hadi.jpg"
+                                alt="Hadianto Kurniawan Tan"
+                                loading="lazy">
+                        </div>
+
+                        <p class="person-role">THE GROOM</p>
+
+                        <h3>Hadianto Kurniawan Tan</h3>
+
+                        <p class="parents">
+                            Putra dari<br>
+                            <strong>Bapak Tan Tjoen Hwa</strong><br>
+                            &amp;<br>
+                            <strong>Ibu Tjhin Tjhiu Loe</strong>
+                        </p>
+
+                    </div>
+
+
+                    <!-- AND -->
+
+                    <div class="couple-and reveal-zoom">
+                        <span>&amp;</span>
+                    </div>
+
+
+                    <!-- RIYA -->
+
+                    <div class="person-card reveal-right">
+
+                        <div class="photo-frame">
+                            <img
+                                src="img/riya.jpg"
+                                alt="Ilmi Riadoh"
+                                loading="lazy">
+                        </div>
+
+                        <p class="person-role">THE BRIDE</p>
+
+                        <h3>Ilmi Riadoh</h3>
+
+                        <p class="parents">
+                            Putri dari<br>
+                            <strong>Bapak Muhammad Saleh</strong><br>
+                            &amp;<br>
+                            <strong>Ibu Nur Alam Ray</strong>
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             COUNTDOWN
+        ================================================== -->
+
+        <section class="countdown-section">
+
+            <div class="container">
+
+                <p class="section-label reveal">
+                    COUNTING THE DAYS
+                </p>
+
+                <h2 class="script-title reveal delay-1">
+                    Until Our Day
+                </h2>
+
+                <div class="countdown">
+
+                    <div class="countdown-item">
+                        <strong id="days">00</strong>
+                        <span>HARI</span>
+                    </div>
+
+                    <div class="countdown-item">
+                        <strong id="hours">00</strong>
+                        <span>JAM</span>
+                    </div>
+
+                    <div class="countdown-item">
+                        <strong id="minutes">00</strong>
+                        <span>MENIT</span>
+                    </div>
+
+                    <div class="countdown-item">
+                        <strong id="seconds">00</strong>
+                        <span>DETIK</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             EVENT
+        ================================================== -->
+
+        <section class="event-section">
+
+            <div class="container">
+
+                <div class="section-heading reveal">
+                    <span>SAVE THE DATE</span>
+                    <h2>Our Wedding</h2>
+                </div>
+
+
+                <div class="event-card reveal-zoom">
+
+                    <div class="event-icon">
+                        ♡
+                    </div>
+
+                    <p class="event-type">
+                        AKAD &amp; RESEPSI
+                    </p>
+
+                    <h3>Sabtu, 12 Desember 2026</h3>
+
+                    <div class="event-divider"></div>
+
+                    <p class="event-time">
+                        Pukul <strong>11.00 WIB</strong>
+                    </p>
+
+                    <h4>Vihara Sila Paramita</h4>
+
+                    <p class="event-address">
+                        Jl. Cipinang Jaya Raya No. 1,
+                        RT 9/RW 7, Cipinang Besar Selatan,
+                        Kec. Jatinegara, Jakarta Timur
+                    </p>
+
+                    <a
+                        href="https://share.google/uluIyRWerclfMMDhH"
+                        target="_blank"
+                        rel="noopener"
+                        class="map-btn">
+                        BUKA GOOGLE MAPS
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             GALLERY
+        ================================================== -->
+
+        <section class="gallery-section">
+
+            <div class="container">
+
+                <div class="section-heading reveal">
+                    <span>OUR MOMENTS</span>
+                    <h2>Gallery</h2>
+                </div>
+
+
+                <div class="gallery-grid">
+
+                    <div class="gallery-item reveal-zoom">
+                        <img
+                            src="img/foto1.jpg"
+                            alt="Foto Hadi dan Riya"
+                            loading="lazy">
+                    </div>
+
+                    <div class="gallery-item reveal-zoom delay-1">
+                        <img
+                            src="img/foto2.jpg"
+                            alt="Foto Hadi dan Riya"
+                            loading="lazy">
+                    </div>
+
+                    <div class="gallery-item reveal-zoom delay-2">
+                        <img
+                            src="img/foto3.jpg"
+                            alt="Foto Hadi dan Riya"
+                            loading="lazy">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             QUOTE
+        ================================================== -->
+
+        <section class="quote-section">
+
+            <div class="container">
+
+                <div class="quote-decoration reveal">
+                    ❝
+                </div>
+
+                <blockquote class="reveal delay-1">
+                    "Love is not about how many days,
+                    months, or years you have been together.
+                    Love is about how much you love each other
+                    every single day."
+                </blockquote>
+
+                <div class="gold-line reveal delay-2"></div>
+
+                <p class="reveal delay-3">
+                    Hadi &amp; Riya
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             RSVP
+        ================================================== -->
+
+        <section class="rsvp-section">
+
+            <div class="container">
+
+                <div class="section-heading reveal">
+                    <span>YOUR PRESENCE</span>
+                    <h2>RSVP</h2>
+                </div>
+
+                <p class="rsvp-text reveal delay-1">
+                    Merupakan suatu kehormatan dan kebahagiaan
+                    bagi kami apabila Bapak/Ibu/Saudara/i
+                    berkenan hadir untuk memberikan doa dan restu.
+                </p>
+
+                <a
+                    href="https://wa.me/"
+                    target="_blank"
+                    rel="noopener"
+                    class="rsvp-btn reveal delay-2">
+                    KONFIRMASI KEHADIRAN
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CLOSING
+        ================================================== -->
+
+        <section class="closing-section">
+
+            <div class="closing-overlay"></div>
+
+            <div class="container">
+
+                <p class="section-label reveal">
+                    WITH LOVE
+                </p>
+
+                <h2 class="script-title reveal delay-1">
+                    Hadi & Riya
+                </h2>
+
+                <p class="closing-text reveal delay-2">
+                    Terima kasih telah menjadi bagian
+                    dari hari bahagia kami.
+                </p>
+
+                <div class="gold-line reveal delay-3"></div>
+
+                <p class="closing-date reveal delay-4">
+                    12 • 12 • 2026
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer>
+
+            <p>HADI &amp; RIYA</p>
+
+            <span>
+                © 2026 Wedding Invitation
+            </span>
+
+        </footer>
+
+    </main>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="js/animation.js"></script>
+
+</body>
+</html>
