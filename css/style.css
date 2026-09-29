@@ -1,1 +1,444 @@
+<script>
+/* =========================================================
+   LUXURY WEDDING ANIMATION JAVASCRIPT
+   ========================================================= */
 
+document.addEventListener("DOMContentLoaded", function () {
+
+  const body = document.body;
+  const cover = document.getElementById("cover");
+  const openButton = document.querySelector(".open-btn");
+
+  /* =======================================================
+     PAGE LOADING
+  ======================================================= */
+
+  body.classList.add("page-loading");
+
+  setTimeout(() => {
+
+    body.classList.remove("page-loading");
+
+    if (cover) {
+      cover.classList.add("loaded");
+    }
+
+  }, 100);
+
+
+  /* =======================================================
+     BUKA UNDANGAN
+  ======================================================= */
+
+  if (openButton && cover) {
+
+    openButton.addEventListener("click", function () {
+
+      // Efek sparkle ketika tombol ditekan
+      createBurstSparkles(
+        window.innerWidth / 2,
+        window.innerHeight / 2,
+        25
+      );
+
+      // Animasi cover
+      cover.classList.add("open");
+
+      // Buka scroll
+      document.body.classList.remove("no-scroll");
+
+      // Jika sebelumnya memakai class lock-scroll
+      document.body.classList.remove("lock-scroll");
+
+      // Mulai partikel
+      setTimeout(() => {
+        startParticles();
+      }, 500);
+
+      // Aktifkan reveal pertama
+      setTimeout(() => {
+        revealElements();
+      }, 800);
+
+    });
+
+  }
+
+
+  /* =======================================================
+     SCROLL REVEAL
+  ======================================================= */
+
+  const revealElementsList = document.querySelectorAll(
+    ".reveal, .reveal-left, .reveal-right, .reveal-zoom"
+  );
+
+  const observer = new IntersectionObserver(
+    function (entries) {
+
+      entries.forEach(function (entry) {
+
+        if (entry.isIntersecting) {
+
+          entry.target.classList.add("active");
+
+          // Jangan diulang
+          observer.unobserve(entry.target);
+        }
+
+      });
+
+    },
+    {
+      threshold: 0.15
+    }
+  );
+
+  revealElementsList.forEach(function (element) {
+    observer.observe(element);
+  });
+
+
+  /* =======================================================
+     SECTION VISIBLE
+  ======================================================= */
+
+  const sections = document.querySelectorAll("section");
+
+  const sectionObserver = new IntersectionObserver(
+    function (entries) {
+
+      entries.forEach(function (entry) {
+
+        if (entry.isIntersecting) {
+
+          entry.target.classList.add("visible");
+
+        }
+
+      });
+
+    },
+    {
+      threshold: 0.2
+    }
+  );
+
+  sections.forEach(function (section) {
+    sectionObserver.observe(section);
+  });
+
+
+  /* =======================================================
+     PARALLAX
+  ======================================================= */
+
+  const parallaxElements =
+    document.querySelectorAll(".parallax");
+
+  window.addEventListener("scroll", function () {
+
+    const scrollY = window.scrollY;
+
+    parallaxElements.forEach(function (element) {
+
+      const speed =
+        parseFloat(element.dataset.speed) || 0.15;
+
+      element.style.transform =
+        "translateY(" + (scrollY * speed) + "px)";
+
+    });
+
+  });
+
+
+  /* =======================================================
+     GOLD PARTICLES
+  ======================================================= */
+
+  let particleStarted = false;
+
+  function startParticles() {
+
+    if (particleStarted) return;
+
+    particleStarted = true;
+
+    setInterval(function () {
+
+      createParticle();
+
+    }, 900);
+
+  }
+
+
+  function createParticle() {
+
+    const particle =
+      document.createElement("div");
+
+    particle.className =
+      "gold-particle";
+
+    const startX =
+      Math.random() * window.innerWidth;
+
+    const duration =
+      6 + Math.random() * 7;
+
+    const moveX =
+      (Math.random() - 0.5) * 150;
+
+    particle.style.left =
+      startX + "px";
+
+    particle.style.bottom =
+      "-10px";
+
+    particle.style.animationDuration =
+      duration + "s";
+
+    particle.style.setProperty(
+      "--move-x",
+      moveX + "px"
+    );
+
+    document.body.appendChild(particle);
+
+    setTimeout(function () {
+
+      particle.remove();
+
+    }, duration * 1000);
+
+  }
+
+
+  /* =======================================================
+     SPARKLE
+  ======================================================= */
+
+  function createSparkle() {
+
+    const sparkle =
+      document.createElement("div");
+
+    sparkle.className =
+      "sparkle";
+
+    sparkle.style.left =
+      Math.random() * window.innerWidth + "px";
+
+    sparkle.style.top =
+      Math.random() * window.innerHeight + "px";
+
+    document.body.appendChild(sparkle);
+
+    setTimeout(function () {
+
+      sparkle.remove();
+
+    }, 1500);
+
+  }
+
+
+  setInterval(function () {
+
+    if (!cover || cover.classList.contains("open")) {
+
+      createSparkle();
+
+    }
+
+  }, 1800);
+
+
+  /* =======================================================
+     SPARKLE BURST
+  ======================================================= */
+
+  function createBurstSparkles(x, y, amount) {
+
+    for (let i = 0; i < amount; i++) {
+
+      const sparkle =
+        document.createElement("div");
+
+      sparkle.className =
+        "sparkle";
+
+      sparkle.style.left =
+        x + (Math.random() - 0.5) * 250 + "px";
+
+      sparkle.style.top =
+        y + (Math.random() - 0.5) * 250 + "px";
+
+      sparkle.style.animationDelay =
+        Math.random() * 0.5 + "s";
+
+      document.body.appendChild(sparkle);
+
+      setTimeout(function () {
+
+        sparkle.remove();
+
+      }, 2000);
+
+    }
+
+  }
+
+
+  /* =======================================================
+     REVEAL ELEMENTS
+  ======================================================= */
+
+  function revealElements() {
+
+    revealElementsList.forEach(function (element) {
+
+      const rect =
+        element.getBoundingClientRect();
+
+      if (rect.top < window.innerHeight) {
+
+        element.classList.add("active");
+
+      }
+
+    });
+
+  }
+
+
+  /* =======================================================
+     MOUSE PARALLAX DESKTOP
+  ======================================================= */
+
+  document.addEventListener("mousemove", function (event) {
+
+    const elements =
+      document.querySelectorAll(
+        ".mouse-parallax"
+      );
+
+    elements.forEach(function (element) {
+
+      const strength =
+        parseFloat(element.dataset.strength) || 10;
+
+      const x =
+        (window.innerWidth / 2 - event.clientX)
+        / window.innerWidth
+        * strength;
+
+      const y =
+        (window.innerHeight / 2 - event.clientY)
+        / window.innerHeight
+        * strength;
+
+      element.style.transform =
+        "translate(" + x + "px," + y + "px)";
+
+    });
+
+  });
+
+
+  /* =======================================================
+     IMAGE TILT
+  ======================================================= */
+
+  document.querySelectorAll(".tilt").forEach(function (element) {
+
+    element.addEventListener("mousemove", function (event) {
+
+      const rect =
+        element.getBoundingClientRect();
+
+      const x =
+        event.clientX - rect.left;
+
+      const y =
+        event.clientY - rect.top;
+
+      const centerX =
+        rect.width / 2;
+
+      const centerY =
+        rect.height / 2;
+
+      const rotateX =
+        ((y - centerY) / centerY) * -4;
+
+      const rotateY =
+        ((x - centerX) / centerX) * 4;
+
+      element.style.transform =
+        "perspective(700px) rotateX(" +
+        rotateX +
+        "deg) rotateY(" +
+        rotateY +
+        "deg) scale(1.02)";
+
+    });
+
+
+    element.addEventListener("mouseleave", function () {
+
+      element.style.transform =
+        "perspective(700px) rotateX(0) rotateY(0) scale(1)";
+
+    });
+
+  });
+
+
+  /* =======================================================
+     MUSIC BUTTON
+  ======================================================= */
+
+  const musicButton =
+    document.querySelector(".music-btn");
+
+  const music =
+    document.querySelector("audio");
+
+  if (musicButton && music) {
+
+    musicButton.addEventListener("click", function () {
+
+      if (music.paused) {
+
+        music.play();
+
+        musicButton.classList.add("playing");
+
+      } else {
+
+        music.pause();
+
+        musicButton.classList.remove("playing");
+
+      }
+
+    });
+
+  }
+
+
+  /* =======================================================
+     PREVENT IMAGE DRAG
+  ======================================================= */
+
+  document.querySelectorAll("img").forEach(function (img) {
+
+    img.setAttribute("draggable", "false");
+
+  });
+
+});
+</script>
