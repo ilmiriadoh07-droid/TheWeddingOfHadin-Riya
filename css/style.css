@@ -4,7 +4,6 @@
    FINAL STYLE.CSS
    ========================================================= */
 
-
 /* =========================================================
    01. GLOBAL / RESET
    ========================================================= */
@@ -27,6 +26,10 @@ body {
 }
 
 body.no-scroll {
+    overflow: hidden;
+}
+
+body.page-loading {
     overflow: hidden;
 }
 
@@ -54,7 +57,6 @@ button {
    ========================================================= */
 
 :root {
-
     --cream: #f9f8f6;
     --cream-dark: #eee8dc;
 
@@ -86,25 +88,16 @@ button {
 
 
 /* =========================================================
-   04. PAGE INTRO / LOADING
+   04. PAGE LOADER
    ========================================================= */
 
-body.page-loading {
-    overflow: hidden;
-}
-
 #page-loader {
-
     position: fixed;
-
     inset: 0;
 
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
-
     justify-content: center;
 
     background: #111;
@@ -113,37 +106,43 @@ body.page-loading {
 
     z-index: 100000;
 
+    opacity: 1;
+    visibility: visible;
+
     transition:
-        opacity 1s ease,
-        visibility 1s ease;
+        opacity .8s ease,
+        visibility .8s ease;
+
+    /*
+       PENGAMAN:
+       Jika JavaScript gagal sekalipun,
+       loading tetap hilang maksimal 3 detik.
+    */
+    animation: forceLoaderHide 3s ease forwards;
 }
 
 #page-loader.hide {
-
     opacity: 0;
-
     visibility: hidden;
+    pointer-events: none;
+    animation: none;
 }
 
 .loader-ring {
-
     width: 50px;
     height: 50px;
 
     border-radius: 50%;
 
-    border:
-        1px solid rgba(216,187,122,.25);
+    border: 1px solid rgba(216, 187, 122, .25);
 
-    border-top-color:
-        var(--gold-light);
+    border-top-color: var(--gold-light);
 
     animation:
         loaderSpin 1.2s linear infinite;
 }
 
 #page-loader p {
-
     margin-top: 20px;
 
     font-family:
@@ -152,15 +151,31 @@ body.page-loading {
 
     font-size: 28px;
 
-    color:
-        var(--gold-light);
+    color: var(--gold-light);
 }
 
 @keyframes loaderSpin {
-
     to {
-        transform:
-            rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes forceLoaderHide {
+
+    0% {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    70% {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
     }
 }
 
@@ -170,17 +185,13 @@ body.page-loading {
    ========================================================= */
 
 #cover {
-
     position: fixed;
-
     inset: 0;
 
     z-index: 9999;
 
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
     text-align: center;
@@ -189,8 +200,8 @@ body.page-loading {
 
     background:
         linear-gradient(
-            rgba(15,10,5,.48),
-            rgba(15,10,5,.72)
+            rgba(15, 10, 5, .48),
+            rgba(15, 10, 5, .72)
         ),
         url("../img/cover.jpg")
         center / cover no-repeat;
@@ -202,23 +213,27 @@ body.page-loading {
     animation:
         zoomBackground 15s infinite alternate ease-in-out,
         coverFadeIn 1.4s ease both;
+
+    transition:
+        transform 1.2s cubic-bezier(.77, 0, .175, 1),
+        opacity .8s ease;
 }
 
 
-/* Cover light */
+/* =========================================================
+   COVER LIGHT
+   ========================================================= */
 
 #cover::before {
-
     content: "";
 
     position: absolute;
-
     inset: 0;
 
     background:
         radial-gradient(
             circle at center,
-            rgba(255,255,255,.10),
+            rgba(255, 255, 255, .10),
             transparent 45%
         );
 
@@ -229,10 +244,11 @@ body.page-loading {
 }
 
 
-/* Circle animation */
+/* =========================================================
+   CIRCLE EFFECT
+   ========================================================= */
 
 #cover::after {
-
     content: "";
 
     position: absolute;
@@ -241,7 +257,7 @@ body.page-loading {
     height: 180px;
 
     border:
-        1px solid rgba(255,255,255,.35);
+        1px solid rgba(255, 255, 255, .35);
 
     border-radius: 50%;
 
@@ -259,7 +275,9 @@ body.page-loading {
 }
 
 
-/* Background zoom */
+/* =========================================================
+   BACKGROUND ZOOM
+   ========================================================= */
 
 @keyframes zoomBackground {
 
@@ -273,7 +291,9 @@ body.page-loading {
 }
 
 
-/* Cover fade */
+/* =========================================================
+   COVER FADE
+   ========================================================= */
 
 @keyframes coverFadeIn {
 
@@ -287,12 +307,14 @@ body.page-loading {
 }
 
 
-/* Light pulse */
+/* =========================================================
+   LIGHT PULSE
+   ========================================================= */
 
 @keyframes lightPulse {
 
-    0%,100% {
-
+    0%,
+    100% {
         opacity: .3;
 
         transform:
@@ -300,7 +322,6 @@ body.page-loading {
     }
 
     50% {
-
         opacity: .8;
 
         transform:
@@ -309,12 +330,13 @@ body.page-loading {
 }
 
 
-/* Circle reveal */
+/* =========================================================
+   CIRCLE REVEAL
+   ========================================================= */
 
 @keyframes circleReveal {
 
     0% {
-
         opacity: 0;
 
         transform:
@@ -327,7 +349,6 @@ body.page-loading {
     }
 
     100% {
-
         opacity: 0;
 
         transform:
@@ -342,7 +363,6 @@ body.page-loading {
    ========================================================= */
 
 .cover-content {
-
     position: relative;
 
     width:
@@ -352,7 +372,6 @@ body.page-loading {
 }
 
 .small-title {
-
     letter-spacing: 5px;
 
     font-size: 11px;
@@ -363,7 +382,6 @@ body.page-loading {
 }
 
 .cover-date {
-
     font-family:
         "Cinzel",
         serif;
@@ -381,7 +399,6 @@ body.page-loading {
 }
 
 .cover-content h1 {
-
     font-family:
         "Great Vibes",
         cursive;
@@ -397,7 +414,7 @@ body.page-loading {
         10px 0 25px;
 
     text-shadow:
-        0 5px 30px rgba(0,0,0,.35);
+        0 5px 30px rgba(0, 0, 0, .35);
 }
 
 .cover-content h1 span {
@@ -406,7 +423,6 @@ body.page-loading {
 }
 
 .cover-description {
-
     max-width:
         480px;
 
@@ -423,7 +439,7 @@ body.page-loading {
         300;
 
     color:
-        rgba(255,255,255,.88);
+        rgba(255, 255, 255, .88);
 }
 
 
@@ -436,7 +452,6 @@ body.page-loading {
 #cover h1,
 #cover .cover-description,
 #cover .open-btn {
-
     opacity: 0;
 
     transform:
@@ -444,31 +459,26 @@ body.page-loading {
 }
 
 #cover.loaded .small-title {
-
     animation:
         luxuryTextIn 1s .2s ease forwards;
 }
 
 #cover.loaded .cover-date {
-
     animation:
         luxuryTextIn 1s .4s ease forwards;
 }
 
 #cover.loaded h1 {
-
     animation:
         luxuryTextIn 1s .7s ease forwards;
 }
 
 #cover.loaded .cover-description {
-
     animation:
         luxuryTextIn 1s .9s ease forwards;
 }
 
 #cover.loaded .open-btn {
-
     animation:
         luxuryTextIn 1s 1.2s ease forwards,
         buttonGlow 2.5s 2.2s ease-in-out infinite;
@@ -477,7 +487,6 @@ body.page-loading {
 @keyframes luxuryTextIn {
 
     from {
-
         opacity: 0;
 
         transform:
@@ -488,7 +497,6 @@ body.page-loading {
     }
 
     to {
-
         opacity: 1;
 
         transform:
@@ -505,16 +513,15 @@ body.page-loading {
    ========================================================= */
 
 .open-btn {
-
     position: relative;
 
     overflow: hidden;
 
     border:
-        1px solid rgba(255,255,255,.55);
+        1px solid rgba(255, 255, 255, .55);
 
     background:
-        rgba(255,255,255,.08);
+        rgba(255, 255, 255, .08);
 
     color: white;
 
@@ -535,6 +542,9 @@ body.page-loading {
     backdrop-filter:
         blur(10px);
 
+    -webkit-backdrop-filter:
+        blur(10px);
+
     transition:
         transform .4s ease,
         background .4s ease,
@@ -542,14 +552,11 @@ body.page-loading {
 }
 
 .open-btn span {
-
     position: relative;
-
     z-index: 2;
 }
 
 .open-btn::before {
-
     content: "";
 
     position: absolute;
@@ -564,7 +571,7 @@ body.page-loading {
         linear-gradient(
             90deg,
             transparent,
-            rgba(255,255,255,.7),
+            rgba(255, 255, 255, .7),
             transparent
         );
 
@@ -576,16 +583,20 @@ body.page-loading {
 }
 
 .open-btn:hover {
-
     transform:
         translateY(-4px)
         scale(1.04);
 
     background:
-        rgba(255,255,255,.16);
+        rgba(255, 255, 255, .16);
 
     box-shadow:
-        0 10px 30px rgba(255,255,255,.2);
+        0 10px 30px rgba(255, 255, 255, .2);
+}
+
+.open-btn:active {
+    transform:
+        scale(.96);
 }
 
 @keyframes buttonShine {
@@ -594,25 +605,25 @@ body.page-loading {
         left: -120%;
     }
 
-    40%,100% {
+    40%,
+    100% {
         left: 150%;
     }
 }
 
 @keyframes buttonGlow {
 
-    0%,100% {
-
+    0%,
+    100% {
         box-shadow:
             0 0 0
-            rgba(255,255,255,0);
+            rgba(255, 255, 255, 0);
     }
 
     50% {
-
         box-shadow:
             0 0 25px
-            rgba(255,255,255,.35);
+            rgba(255, 255, 255, .35);
     }
 }
 
@@ -622,15 +633,10 @@ body.page-loading {
    ========================================================= */
 
 #cover.open {
-
     transform:
         translateY(-100%);
 
     opacity: 0;
-
-    transition:
-        transform 1.2s cubic-bezier(.77,0,.175,1),
-        opacity .8s ease;
 
     pointer-events:
         none;
@@ -642,11 +648,9 @@ body.page-loading {
    ========================================================= */
 
 .scroll-hint {
-
     position: absolute;
 
     bottom: 30px;
-
     left: 50%;
 
     transform:
@@ -660,7 +664,6 @@ body.page-loading {
 }
 
 .scroll-hint span {
-
     display: block;
 
     width: 1px;
@@ -681,8 +684,8 @@ body.page-loading {
 
 @keyframes scrollLine {
 
-    0%,100% {
-
+    0%,
+    100% {
         transform:
             scaleY(.4);
 
@@ -691,7 +694,6 @@ body.page-loading {
     }
 
     50% {
-
         transform:
             scaleY(1);
     }
@@ -703,7 +705,6 @@ body.page-loading {
    ========================================================= */
 
 #main-content {
-
     position: relative;
 
     background:
@@ -716,14 +717,12 @@ body.page-loading {
    ========================================================= */
 
 section {
-
     position: relative;
 
     overflow: hidden;
 }
 
 section::before {
-
     content: "";
 
     position: absolute;
@@ -747,6 +746,8 @@ section::before {
 
     transition:
         width 1.5s ease;
+
+    pointer-events: none;
 }
 
 section.visible::before {
@@ -759,7 +760,6 @@ section.visible::before {
    ========================================================= */
 
 .hero-section {
-
     min-height: 100vh;
 
     display: flex;
@@ -782,14 +782,13 @@ section.visible::before {
 }
 
 .decorative-circle {
-
     position: absolute;
 
     width: 500px;
     height: 500px;
 
     border:
-        1px solid rgba(176,138,69,.12);
+        1px solid rgba(176, 138, 69, .12);
 
     border-radius: 50%;
 
@@ -801,10 +800,11 @@ section.visible::before {
 
     animation:
         slowRotate 30s linear infinite;
+
+    pointer-events: none;
 }
 
 .decorative-circle::before {
-
     content: "";
 
     position: absolute;
@@ -812,7 +812,7 @@ section.visible::before {
     inset: 30px;
 
     border:
-        1px solid rgba(176,138,69,.08);
+        1px solid rgba(176, 138, 69, .08);
 
     border-radius: 50%;
 }
@@ -820,7 +820,6 @@ section.visible::before {
 @keyframes slowRotate {
 
     to {
-
         transform:
             translate(-50%, -50%)
             rotate(360deg);
@@ -833,7 +832,6 @@ section.visible::before {
    ========================================================= */
 
 .section-label {
-
     font-size: 10px;
 
     letter-spacing: 4px;
@@ -845,7 +843,6 @@ section.visible::before {
 }
 
 .script-title {
-
     font-family:
         "Great Vibes",
         cursive;
@@ -867,12 +864,10 @@ section.visible::before {
    ========================================================= */
 
 .gold-line {
-
     position: relative;
 }
 
 .gold-line::after {
-
     content: "";
 
     display: block;
@@ -901,7 +896,6 @@ section.visible::before {
    ========================================================= */
 
 .hero-text {
-
     max-width: 500px;
 
     margin:
@@ -916,7 +910,6 @@ section.visible::before {
 }
 
 .hero-date {
-
     display: inline-block;
 
     padding:
@@ -946,14 +939,12 @@ section.visible::before {
    ========================================================= */
 
 .section-heading {
-
     text-align: center;
 
     margin-bottom: 60px;
 }
 
 .section-heading span {
-
     display: block;
 
     color:
@@ -967,7 +958,6 @@ section.visible::before {
 }
 
 .section-heading h2 {
-
     font-family:
         "Cinzel",
         serif;
@@ -984,7 +974,6 @@ section.visible::before {
    ========================================================= */
 
 .couple-section {
-
     padding:
         120px 0;
 
@@ -993,7 +982,6 @@ section.visible::before {
 }
 
 .couple-grid {
-
     display: grid;
 
     grid-template-columns:
@@ -1005,12 +993,10 @@ section.visible::before {
 }
 
 .person-card {
-
     text-align: center;
 }
 
 .photo-frame {
-
     position: relative;
 
     width:
@@ -1025,7 +1011,7 @@ section.visible::before {
     padding: 8px;
 
     border:
-        1px solid rgba(176,138,69,.5);
+        1px solid rgba(176, 138, 69, .5);
 
     background:
         white;
@@ -1038,7 +1024,6 @@ section.visible::before {
 }
 
 .photo-frame::before {
-
     content: "";
 
     position: absolute;
@@ -1046,7 +1031,7 @@ section.visible::before {
     inset: 14px;
 
     border:
-        1px solid rgba(176,138,69,.35);
+        1px solid rgba(176, 138, 69, .35);
 
     z-index: 2;
 
@@ -1054,9 +1039,7 @@ section.visible::before {
 }
 
 .photo-frame img {
-
     width: 100%;
-
     height: 100%;
 
     object-fit: cover;
@@ -1067,13 +1050,11 @@ section.visible::before {
 }
 
 .photo-frame:hover img {
-
     transform:
         scale(1.05);
 }
 
 .person-role {
-
     font-size: 9px;
 
     letter-spacing: 3px;
@@ -1085,7 +1066,6 @@ section.visible::before {
 }
 
 .person-card h3 {
-
     font-family:
         "Great Vibes",
         cursive;
@@ -1098,7 +1078,6 @@ section.visible::before {
 }
 
 .parents {
-
     color:
         var(--brown-light);
 
@@ -1108,23 +1087,19 @@ section.visible::before {
 }
 
 .couple-and {
-
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 }
 
 .couple-and span {
-
     width: 65px;
     height: 65px;
 
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
     border:
@@ -1140,6 +1115,9 @@ section.visible::before {
         cursive;
 
     font-size: 35px;
+
+    animation:
+        floating 4s ease-in-out infinite;
 }
 
 
@@ -1148,7 +1126,6 @@ section.visible::before {
    ========================================================= */
 
 .countdown-section {
-
     padding:
         110px 0;
 
@@ -1170,7 +1147,6 @@ section.visible::before {
 }
 
 .countdown {
-
     display: grid;
 
     grid-template-columns:
@@ -1183,19 +1159,18 @@ section.visible::before {
         60px auto 0;
 
     border-top:
-        1px solid rgba(216,187,122,.35);
+        1px solid rgba(216, 187, 122, .35);
 
     border-bottom:
-        1px solid rgba(216,187,122,.35);
+        1px solid rgba(216, 187, 122, .35);
 }
 
 .countdown-item {
-
     padding:
         30px 10px;
 
     border-right:
-        1px solid rgba(216,187,122,.2);
+        1px solid rgba(216, 187, 122, .2);
 
     opacity: 0;
 
@@ -1227,7 +1202,6 @@ section.visible::before {
 }
 
 .countdown-item strong {
-
     display: block;
 
     font-family:
@@ -1244,7 +1218,6 @@ section.visible::before {
 }
 
 .countdown-item span {
-
     display: block;
 
     margin-top: 8px;
@@ -1259,7 +1232,6 @@ section.visible::before {
 @keyframes countdownIn {
 
     to {
-
         opacity: 1;
 
         transform:
@@ -1273,7 +1245,6 @@ section.visible::before {
    ========================================================= */
 
 .event-section {
-
     padding:
         120px 0;
 
@@ -1282,7 +1253,6 @@ section.visible::before {
 }
 
 .event-card {
-
     max-width:
         650px;
 
@@ -1296,20 +1266,22 @@ section.visible::before {
         60px 40px;
 
     background:
-        rgba(255,255,255,.65);
+        rgba(255, 255, 255, .65);
 
     border:
-        1px solid rgba(176,138,69,.35);
+        1px solid rgba(176, 138, 69, .35);
 
     box-shadow:
         var(--shadow);
 
     backdrop-filter:
         blur(10px);
+
+    -webkit-backdrop-filter:
+        blur(10px);
 }
 
 .event-icon {
-
     font-size: 30px;
 
     color:
@@ -1322,7 +1294,6 @@ section.visible::before {
 }
 
 .event-type {
-
     font-size: 10px;
 
     letter-spacing: 4px;
@@ -1334,7 +1305,6 @@ section.visible::before {
 }
 
 .event-card h3 {
-
     font-family:
         "Cinzel",
         serif;
@@ -1345,9 +1315,7 @@ section.visible::before {
 }
 
 .event-divider {
-
     width: 60px;
-
     height: 1px;
 
     background:
@@ -1358,14 +1326,12 @@ section.visible::before {
 }
 
 .event-time {
-
     font-size: 13px;
 
     margin-bottom: 25px;
 }
 
 .event-card h4 {
-
     font-family:
         "Great Vibes",
         cursive;
@@ -1381,7 +1347,6 @@ section.visible::before {
 }
 
 .event-address {
-
     max-width: 500px;
 
     margin:
@@ -1402,7 +1367,6 @@ section.visible::before {
 
 .map-btn,
 .rsvp-btn {
-
     display:
         inline-block;
 
@@ -1425,12 +1389,11 @@ section.visible::before {
         2px;
 
     transition:
-        .4s ease;
+        all .4s ease;
 }
 
 .map-btn:hover,
 .rsvp-btn:hover {
-
     background:
         var(--gold);
 
@@ -1441,13 +1404,18 @@ section.visible::before {
         translateY(-3px);
 }
 
+.map-btn:active,
+.rsvp-btn:active {
+    transform:
+        scale(.97);
+}
+
 
 /* =========================================================
    22. GALLERY
    ========================================================= */
 
 .gallery-section {
-
     padding:
         120px 0;
 
@@ -1456,7 +1424,6 @@ section.visible::before {
 }
 
 .gallery-grid {
-
     display:
         grid;
 
@@ -1467,7 +1434,6 @@ section.visible::before {
 }
 
 .gallery-item {
-
     overflow:
         hidden;
 
@@ -1479,9 +1445,7 @@ section.visible::before {
 }
 
 .gallery-item img {
-
     width: 100%;
-
     height: 100%;
 
     object-fit: cover;
@@ -1492,7 +1456,6 @@ section.visible::before {
 }
 
 .gallery-item:hover img {
-
     transform:
         scale(1.07);
 
@@ -1506,7 +1469,6 @@ section.visible::before {
    ========================================================= */
 
 .quote-section {
-
     padding:
         130px 0;
 
@@ -1520,7 +1482,6 @@ section.visible::before {
 }
 
 .quote-decoration {
-
     color:
         var(--gold-light);
 
@@ -1536,7 +1497,6 @@ section.visible::before {
 }
 
 .quote-section blockquote {
-
     max-width:
         700px;
 
@@ -1557,17 +1517,15 @@ section.visible::before {
         400;
 
     color:
-        rgba(255,255,255,.9);
+        rgba(255, 255, 255, .9);
 }
 
 .quote-section .gold-line::after {
-
     background:
         var(--gold-light);
 }
 
 .quote-section p {
-
     margin-top:
         25px;
 
@@ -1588,7 +1546,6 @@ section.visible::before {
    ========================================================= */
 
 .rsvp-section {
-
     padding:
         120px 0;
 
@@ -1600,7 +1557,6 @@ section.visible::before {
 }
 
 .rsvp-text {
-
     max-width:
         600px;
 
@@ -1618,7 +1574,6 @@ section.visible::before {
 }
 
 .rsvp-btn {
-
     background:
         var(--brown);
 
@@ -1630,7 +1585,6 @@ section.visible::before {
 }
 
 .rsvp-btn:hover {
-
     background:
         var(--gold);
 
@@ -1644,7 +1598,6 @@ section.visible::before {
    ========================================================= */
 
 .closing-section {
-
     min-height:
         80vh;
 
@@ -1665,15 +1618,14 @@ section.visible::before {
 
     background:
         linear-gradient(
-            rgba(20,13,8,.5),
-            rgba(20,13,8,.75)
+            rgba(20, 13, 8, .5),
+            rgba(20, 13, 8, .75)
         ),
         url("../img/cover.jpg")
         center / cover no-repeat;
 }
 
 .closing-overlay {
-
     position:
         absolute;
 
@@ -1684,12 +1636,11 @@ section.visible::before {
         radial-gradient(
             circle at center,
             transparent,
-            rgba(0,0,0,.35)
+            rgba(0, 0, 0, .35)
         );
 }
 
 .closing-section .container {
-
     position:
         relative;
 
@@ -1707,7 +1658,6 @@ section.visible::before {
 }
 
 .closing-text {
-
     max-width:
         450px;
 
@@ -1727,7 +1677,6 @@ section.visible::before {
 }
 
 .closing-date {
-
     margin-top:
         25px;
 
@@ -1751,7 +1700,6 @@ section.visible::before {
    ========================================================= */
 
 .music-btn {
-
     position:
         fixed;
 
@@ -1768,13 +1716,13 @@ section.visible::before {
         48px;
 
     border:
-        1px solid rgba(176,138,69,.6);
+        1px solid rgba(176, 138, 69, .6);
 
     border-radius:
         50%;
 
     background:
-        rgba(255,255,255,.85);
+        rgba(255, 255, 255, .85);
 
     color:
         var(--gold-dark);
@@ -1789,9 +1737,12 @@ section.visible::before {
         900;
 
     box-shadow:
-        0 4px 15px rgba(0,0,0,.12);
+        0 4px 15px rgba(0, 0, 0, .12);
 
     backdrop-filter:
+        blur(10px);
+
+    -webkit-backdrop-filter:
         blur(10px);
 
     transition:
@@ -1800,17 +1751,15 @@ section.visible::before {
 }
 
 .music-btn:hover {
-
     transform:
         scale(1.1);
 
     box-shadow:
         0 0 25px
-        rgba(197,160,89,.45);
+        rgba(197, 160, 89, .45);
 }
 
 .music-btn.playing {
-
     animation:
         spin 4s linear infinite,
         musicGlow 2s ease-in-out infinite;
@@ -1826,18 +1775,17 @@ section.visible::before {
 
 @keyframes musicGlow {
 
-    0%,100% {
-
+    0%,
+    100% {
         box-shadow:
             0 4px 12px
-            rgba(0,0,0,.15);
+            rgba(0, 0, 0, .15);
     }
 
     50% {
-
         box-shadow:
             0 0 25px
-            rgba(197,160,89,.65);
+            rgba(197, 160, 89, .65);
     }
 }
 
@@ -1847,7 +1795,6 @@ section.visible::before {
    ========================================================= */
 
 .reveal {
-
     opacity: 0;
 
     transform:
@@ -1859,12 +1806,11 @@ section.visible::before {
 
     transition:
         opacity 1s ease,
-        transform 1s cubic-bezier(.25,1,.5,1),
+        transform 1s cubic-bezier(.25, 1, .5, 1),
         filter 1s ease;
 }
 
 .reveal.active {
-
     opacity: 1;
 
     transform:
@@ -1881,18 +1827,16 @@ section.visible::before {
    ========================================================= */
 
 .reveal-left {
-
     opacity: 0;
 
     transform:
         translateX(-70px);
 
     transition:
-        all 1s cubic-bezier(.25,1,.5,1);
+        all 1s cubic-bezier(.25, 1, .5, 1);
 }
 
 .reveal-left.active {
-
     opacity: 1;
 
     transform:
@@ -1905,18 +1849,16 @@ section.visible::before {
    ========================================================= */
 
 .reveal-right {
-
     opacity: 0;
 
     transform:
         translateX(70px);
 
     transition:
-        all 1s cubic-bezier(.25,1,.5,1);
+        all 1s cubic-bezier(.25, 1, .5, 1);
 }
 
 .reveal-right.active {
-
     opacity: 1;
 
     transform:
@@ -1929,7 +1871,6 @@ section.visible::before {
    ========================================================= */
 
 .reveal-zoom {
-
     opacity: 0;
 
     transform:
@@ -1940,12 +1881,11 @@ section.visible::before {
 
     transition:
         opacity 1.2s ease,
-        transform 1.2s cubic-bezier(.25,1,.5,1),
+        transform 1.2s cubic-bezier(.25, 1, .5, 1),
         filter 1.2s ease;
 }
 
 .reveal-zoom.active {
-
     opacity: 1;
 
     transform:
@@ -1986,7 +1926,6 @@ section.visible::before {
    ========================================================= */
 
 .gold-particle {
-
     position:
         fixed;
 
@@ -2018,9 +1957,7 @@ section.visible::before {
 @keyframes particleFloat {
 
     0% {
-
-        opacity:
-            0;
+        opacity: 0;
 
         transform:
             translateY(0)
@@ -2036,9 +1973,7 @@ section.visible::before {
     }
 
     100% {
-
-        opacity:
-            0;
+        opacity: 0;
 
         transform:
             translateY(-100vh)
@@ -2053,7 +1988,6 @@ section.visible::before {
    ========================================================= */
 
 .sparkle {
-
     position:
         fixed;
 
@@ -2082,18 +2016,14 @@ section.visible::before {
 @keyframes sparkleAnimation {
 
     0% {
-
-        opacity:
-            0;
+        opacity: 0;
 
         transform:
             scale(0);
     }
 
     30% {
-
-        opacity:
-            1;
+        opacity: 1;
 
         transform:
             scale(1.5);
@@ -2104,9 +2034,7 @@ section.visible::before {
     }
 
     100% {
-
-        opacity:
-            0;
+        opacity: 0;
 
         transform:
             scale(0);
@@ -2115,25 +2043,23 @@ section.visible::before {
 
 
 /* =========================================================
-   34. FLOATING ELEMENT
+   34. FLOATING
    ========================================================= */
 
 .float {
-
     animation:
         floating 4s ease-in-out infinite;
 }
 
 @keyframes floating {
 
-    0%,100% {
-
+    0%,
+    100% {
         transform:
             translateY(0);
     }
 
     50% {
-
         transform:
             translateY(-10px);
     }
@@ -2145,7 +2071,6 @@ section.visible::before {
    ========================================================= */
 
 .parallax {
-
     will-change:
         transform;
 
@@ -2155,11 +2080,10 @@ section.visible::before {
 
 
 /* =========================================================
-   36. IMAGE GENERAL EFFECT
+   36. IMAGE EFFECT
    ========================================================= */
 
 .container img {
-
     transition:
         transform 1s ease,
         filter 1s ease;
@@ -2182,14 +2106,22 @@ section.visible::before {
             center center;
     }
 
-    .cover-content h1 {
+    .cover-content {
+        width:
+            90%;
+    }
 
+    .cover-content h1 {
         font-size:
             70px;
     }
 
-    .couple-grid {
+    .cover-description {
+        max-width:
+            350px;
+    }
 
+    .couple-grid {
         grid-template-columns:
             1fr;
 
@@ -2198,25 +2130,21 @@ section.visible::before {
     }
 
     .couple-and {
-
         order:
             2;
     }
 
     .person-card:first-child {
-
         order:
             1;
     }
 
     .person-card:last-child {
-
         order:
             3;
     }
 
     .couple-and span {
-
         width:
             55px;
 
@@ -2228,32 +2156,27 @@ section.visible::before {
     }
 
     .countdown {
-
         grid-template-columns:
             repeat(2, 1fr);
     }
 
     .countdown-item:nth-child(2) {
-
         border-right:
             none;
     }
 
     .countdown-item:nth-child(1),
     .countdown-item:nth-child(2) {
-
         border-bottom:
-            1px solid rgba(216,187,122,.2);
+            1px solid rgba(216, 187, 122, .2);
     }
 
     .gallery-grid {
-
         grid-template-columns:
             1fr 1fr;
     }
 
     .gallery-item:last-child {
-
         grid-column:
             1 / -1;
 
@@ -2265,15 +2188,21 @@ section.visible::before {
     }
 
     .event-card {
-
         padding:
             45px 25px;
     }
 
     .event-card h4 {
-
         font-size:
             34px;
+    }
+
+    .music-btn {
+        right:
+            15px;
+
+        bottom:
+            15px;
     }
 }
 
@@ -2285,13 +2214,27 @@ section.visible::before {
 @media (max-width: 420px) {
 
     .cover-content h1 {
-
         font-size:
             60px;
     }
 
-    .cover-description {
+    .cover-date {
+        font-size:
+            11px;
 
+        letter-spacing:
+            3px;
+    }
+
+    .small-title {
+        font-size:
+            9px;
+
+        letter-spacing:
+            3px;
+    }
+
+    .cover-description {
         font-size:
             11px;
 
@@ -2299,34 +2242,77 @@ section.visible::before {
             0 10px;
     }
 
-    .gallery-grid {
+    .open-btn {
+        padding:
+            13px 25px;
 
+        font-size:
+            9px;
+    }
+
+    .gallery-grid {
         grid-template-columns:
             1fr;
     }
 
     .gallery-item:last-child {
-
         max-width:
             100%;
     }
 
     .script-title {
-
         font-size:
             55px;
     }
 
     .event-card {
-
         padding:
             40px 20px;
+    }
+
+    .hero-text {
+        font-size:
+            11px;
+    }
+
+    .hero-date {
+        font-size:
+            9px;
+
+        letter-spacing:
+            2px;
+
+        padding:
+            9px 15px;
     }
 }
 
 
 /* =========================================================
-   39. REDUCE MOTION
+   39. SAFETY FALLBACK
+   ========================================================= */
+
+/*
+   Kalau JavaScript gagal total:
+   - loader tetap hilang
+   - cover tetap bisa terlihat
+   - isi reveal tetap terlihat
+*/
+
+@keyframes fallbackContent {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   40. REDUCE MOTION
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
