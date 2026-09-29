@@ -1,10 +1,4 @@
-// =========================================================
-// HADI & RIYA
-// LUXURY WEDDING INVITATION
-// FINAL ANIMATION.JS
-// =========================================================
-
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
 
     const body = document.body;
     const loader = document.getElementById("page-loader");
@@ -15,11 +9,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const musicButton = document.getElementById("music-btn");
 
 
-    // =====================================================
-    // 01. PAGE LOADER
-    // =====================================================
+    /* =========================================
+       LOADING
+       ========================================= */
 
-    setTimeout(() => {
+    function hideLoader() {
 
         if (loader) {
             loader.classList.add("hide");
@@ -30,59 +24,38 @@ document.addEventListener("DOMContentLoaded", () => {
         if (cover) {
             cover.classList.add("loaded");
         }
-
-    }, 1200);
-
+    }
 
 
-    // =====================================================
-    // 02. OPEN INVITATION
-    // =====================================================
+    // Hilangkan loading setelah 1 detik
+    setTimeout(hideLoader, 1000);
+
+
+    // Pengaman tambahan:
+    // kalau ada masalah JS lain, loading tetap hilang
+    setTimeout(hideLoader, 3000);
+
+
+
+    /* =========================================
+       BUKA UNDANGAN
+       ========================================= */
 
     if (openButton && cover) {
 
-        openButton.addEventListener("click", () => {
+        openButton.addEventListener("click", function () {
 
-            // Sparkle effect
-            createSparkleBurst(
-                window.innerWidth / 2,
-                window.innerHeight / 2
-            );
-
-
-            // Cover keluar
             cover.classList.add("open");
 
-
-            // Aktifkan scroll
             body.classList.remove("no-scroll");
 
-
-            // Jalankan partikel emas
-            startGoldParticles();
-
-
-            // Putar musik
             playMusic();
 
-
-            // Scroll ke awal halaman
-            setTimeout(() => {
-
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                });
-
-            }, 500);
-
-
-            // Hilangkan cover dari interaksi
-            setTimeout(() => {
+            setTimeout(function () {
 
                 cover.style.display = "none";
 
-            }, 1400);
+            }, 1300);
 
         });
 
@@ -90,36 +63,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    // =====================================================
-    // 03. MUSIC
-    // =====================================================
+    /* =========================================
+       MUSIK
+       ========================================= */
 
     function playMusic() {
 
         if (!music) return;
 
-        const promise = music.play();
+        music.play()
+            .then(function () {
 
-        if (promise !== undefined) {
+                if (musicButton) {
+                    musicButton.classList.add("playing");
+                }
 
-            promise
-                .then(() => {
+            })
+            .catch(function () {
 
-                    if (musicButton) {
-                        musicButton.classList.add("playing");
-                    }
+                console.log(
+                    "Musik membutuhkan interaksi pengguna."
+                );
 
-                })
-                .catch(() => {
+            });
 
-                    /*
-                     * Beberapa browser memblokir autoplay.
-                     * Musik tetap bisa dimainkan lewat tombol musik.
-                     */
-
-                });
-
-        }
     }
 
 
@@ -132,12 +99,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (musicButton) {
             musicButton.classList.remove("playing");
         }
+
     }
 
 
     if (musicButton) {
 
-        musicButton.addEventListener("click", () => {
+        musicButton.addEventListener("click", function () {
 
             if (!music) return;
 
@@ -157,322 +125,103 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    // =====================================================
-    // 04. SCROLL REVEAL
-    // =====================================================
+    /* =========================================
+       SCROLL REVEAL
+       ========================================= */
 
-    const revealElements = document.querySelectorAll(
-        ".reveal, .reveal-left, .reveal-right, .reveal-zoom"
-    );
-
-
-    const revealObserver = new IntersectionObserver(
-        (entries) => {
-
-            entries.forEach((entry) => {
-
-                if (entry.isIntersecting) {
-
-                    entry.target.classList.add("active");
-
-                }
-
-            });
-
-        },
-        {
-            threshold: 0.15,
-            rootMargin: "0px 0px -60px 0px"
-        }
-    );
-
-
-    revealElements.forEach((element) => {
-
-        revealObserver.observe(element);
-
-    });
-
-
-
-    // =====================================================
-    // 05. SECTION ANIMATION
-    // =====================================================
-
-    const sections = document.querySelectorAll("section");
-
-
-    const sectionObserver = new IntersectionObserver(
-        (entries) => {
-
-            entries.forEach((entry) => {
-
-                if (entry.isIntersecting) {
-
-                    entry.target.classList.add("visible");
-
-                }
-
-            });
-
-        },
-        {
-            threshold: 0.15
-        }
-    );
-
-
-    sections.forEach((section) => {
-
-        sectionObserver.observe(section);
-
-    });
-
-
-
-    // =====================================================
-    // 06. GOLD PARTICLES
-    // =====================================================
-
-    function createGoldParticle() {
-
-        const particle = document.createElement("span");
-
-        particle.className = "gold-particle";
-
-
-        const startX =
-            Math.random() *
-            window.innerWidth;
-
-
-        const startY =
-            window.innerHeight +
-            20;
-
-
-        const moveX =
-            (Math.random() - 0.5) * 180;
-
-
-        const duration =
-            5000 +
-            Math.random() * 6000;
-
-
-        particle.style.left =
-            `${startX}px`;
-
-        particle.style.top =
-            `${startY}px`;
-
-        particle.style.setProperty(
-            "--move-x",
-            `${moveX}px`
+    const elements =
+        document.querySelectorAll(
+            ".reveal, .reveal-left, .reveal-right, .reveal-zoom"
         );
 
-        particle.style.animationDuration =
-            `${duration}ms`;
 
+    if ("IntersectionObserver" in window) {
 
-        document.body.appendChild(particle);
+        const observer =
+            new IntersectionObserver(
+                function (entries) {
 
+                    entries.forEach(function (entry) {
 
-        setTimeout(() => {
+                        if (entry.isIntersecting) {
 
-            particle.remove();
+                            entry.target.classList.add("active");
 
-        }, duration + 500);
+                        }
 
-    }
+                    });
 
+                },
+                {
+                    threshold: 0.15
+                }
+            );
 
-    function startGoldParticles() {
 
-        // Buat beberapa partikel awal
-        for (let i = 0; i < 18; i++) {
+        elements.forEach(function (element) {
 
-            setTimeout(() => {
-
-                createGoldParticle();
-
-            }, i * 250);
-
-        }
-
-
-        // Partikel terus berjalan
-        setInterval(() => {
-
-            createGoldParticle();
-
-        }, 700);
-
-    }
-
-
-
-    // =====================================================
-    // 07. SPARKLE
-    // =====================================================
-
-    function createSparkle(x, y) {
-
-        const sparkle =
-            document.createElement("span");
-
-        sparkle.className =
-            "sparkle";
-
-
-        sparkle.style.left =
-            `${x}px`;
-
-        sparkle.style.top =
-            `${y}px`;
-
-
-        document.body.appendChild(sparkle);
-
-
-        setTimeout(() => {
-
-            sparkle.remove();
-
-        }, 1600);
-
-    }
-
-
-    function createSparkleBurst(x, y) {
-
-        const amount = 18;
-
-
-        for (let i = 0; i < amount; i++) {
-
-            const angle =
-                (Math.PI * 2 / amount) * i;
-
-
-            const distance =
-                50 + Math.random() * 100;
-
-
-            const sparkleX =
-                x +
-                Math.cos(angle) * distance;
-
-
-            const sparkleY =
-                y +
-                Math.sin(angle) * distance;
-
-
-            setTimeout(() => {
-
-                createSparkle(
-                    sparkleX,
-                    sparkleY
-                );
-
-            }, i * 25);
-
-        }
-
-    }
-
-
-
-    // =====================================================
-    // 08. CLICK SPARKLE
-    // =====================================================
-
-    document.addEventListener("click", (event) => {
-
-        // Jangan terlalu banyak sparkle
-        if (
-            event.target.closest(".music-btn") ||
-            event.target.closest(".open-btn")
-        ) {
-            return;
-        }
-
-
-        createSparkle(
-            event.clientX,
-            event.clientY
-        );
-
-    });
-
-
-
-    // =====================================================
-    // 09. PARALLAX
-    // =====================================================
-
-    const parallaxElements =
-        document.querySelectorAll(".parallax");
-
-
-    let ticking = false;
-
-
-    function updateParallax() {
-
-        const scrollY =
-            window.scrollY;
-
-
-        parallaxElements.forEach((element) => {
-
-            const speed =
-                parseFloat(
-                    element.dataset.speed || "0.15"
-                );
-
-
-            const movement =
-                scrollY * speed;
-
-
-            element.style.transform =
-                `translateY(${movement}px)`;
+            observer.observe(element);
 
         });
 
+    } else {
 
-        ticking = false;
+        elements.forEach(function (element) {
+
+            element.classList.add("active");
+
+        });
 
     }
 
 
-    window.addEventListener(
-        "scroll",
-        () => {
 
-            if (!ticking) {
+    /* =========================================
+       SECTION VISIBLE
+       ========================================= */
 
-                window.requestAnimationFrame(
-                    updateParallax
-                );
-
-                ticking = true;
-
-            }
-
-        },
-        {
-            passive: true
-        }
-    );
+    const sections =
+        document.querySelectorAll("section");
 
 
+    if ("IntersectionObserver" in window) {
 
-    // =====================================================
-    // 10. COUNTDOWN
-    // =====================================================
+        const sectionObserver =
+            new IntersectionObserver(
+                function (entries) {
+
+                    entries.forEach(function (entry) {
+
+                        if (entry.isIntersecting) {
+
+                            entry.target.classList.add(
+                                "visible"
+                            );
+
+                        }
+
+                    });
+
+                },
+                {
+                    threshold: 0.1
+                }
+            );
+
+
+        sections.forEach(function (section) {
+
+            sectionObserver.observe(section);
+
+        });
+
+    }
+
+
+
+    /* =========================================
+       COUNTDOWN
+       ========================================= */
 
     const targetDate =
         new Date(
@@ -480,16 +229,16 @@ document.addEventListener("DOMContentLoaded", () => {
         ).getTime();
 
 
-    const daysElement =
+    const days =
         document.getElementById("days");
 
-    const hoursElement =
+    const hours =
         document.getElementById("hours");
 
-    const minutesElement =
+    const minutes =
         document.getElementById("minutes");
 
-    const secondsElement =
+    const seconds =
         document.getElementById("seconds");
 
 
@@ -498,38 +247,29 @@ document.addEventListener("DOMContentLoaded", () => {
         const now =
             new Date().getTime();
 
-
         const distance =
             targetDate - now;
 
 
         if (distance <= 0) {
 
-            if (daysElement)
-                daysElement.textContent = "00";
-
-            if (hoursElement)
-                hoursElement.textContent = "00";
-
-            if (minutesElement)
-                minutesElement.textContent = "00";
-
-            if (secondsElement)
-                secondsElement.textContent = "00";
+            if (days) days.textContent = "00";
+            if (hours) hours.textContent = "00";
+            if (minutes) minutes.textContent = "00";
+            if (seconds) seconds.textContent = "00";
 
             return;
-
         }
 
 
-        const days =
+        const d =
             Math.floor(
                 distance /
                 (1000 * 60 * 60 * 24)
             );
 
 
-        const hours =
+        const h =
             Math.floor(
                 (distance %
                     (1000 * 60 * 60 * 24)) /
@@ -537,7 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-        const minutes =
+        const m =
             Math.floor(
                 (distance %
                     (1000 * 60 * 60)) /
@@ -545,7 +285,7 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-        const seconds =
+        const s =
             Math.floor(
                 (distance %
                     (1000 * 60)) /
@@ -553,34 +293,34 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-        if (daysElement) {
+        if (days) {
 
-            daysElement.textContent =
-                String(days).padStart(2, "0");
-
-        }
-
-
-        if (hoursElement) {
-
-            hoursElement.textContent =
-                String(hours).padStart(2, "0");
+            days.textContent =
+                String(d).padStart(2, "0");
 
         }
 
 
-        if (minutesElement) {
+        if (hours) {
 
-            minutesElement.textContent =
-                String(minutes).padStart(2, "0");
+            hours.textContent =
+                String(h).padStart(2, "0");
 
         }
 
 
-        if (secondsElement) {
+        if (minutes) {
 
-            secondsElement.textContent =
-                String(seconds).padStart(2, "0");
+            minutes.textContent =
+                String(m).padStart(2, "0");
+
+        }
+
+
+        if (seconds) {
+
+            seconds.textContent =
+                String(s).padStart(2, "0");
 
         }
 
@@ -589,7 +329,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateCountdown();
 
-
     setInterval(
         updateCountdown,
         1000
@@ -597,131 +336,50 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    // =====================================================
-    // 11. IMAGE PROTECTION / UX
-    // =====================================================
-
-    document
-        .querySelectorAll("img")
-        .forEach((image) => {
-
-            image.setAttribute(
-                "draggable",
-                "false"
-            );
-
-        });
-
-
-
-    // =====================================================
-    // 12. MUSIC VISIBILITY
-    // =====================================================
+    /* =========================================
+       SPARKLE KETIKA KLIK
+       ========================================= */
 
     document.addEventListener(
-        "visibilitychange",
-        () => {
+        "click",
+        function (event) {
 
             if (
-                document.hidden &&
-                music &&
-                !music.paused
+                event.target.closest(".music-btn") ||
+                event.target.closest(".open-btn")
             ) {
-
-                music.pause();
-
-                if (musicButton) {
-
-                    musicButton.classList.remove(
-                        "playing"
-                    );
-
-                }
-
+                return;
             }
+
+
+            const sparkle =
+                document.createElement("span");
+
+
+            sparkle.className =
+                "sparkle";
+
+
+            sparkle.style.left =
+                event.clientX + "px";
+
+
+            sparkle.style.top =
+                event.clientY + "px";
+
+
+            document.body.appendChild(
+                sparkle
+            );
+
+
+            setTimeout(function () {
+
+                sparkle.remove();
+
+            }, 1500);
 
         }
     );
-
-
-
-    // =====================================================
-    // 13. IMAGE LOADING EFFECT
-    // =====================================================
-
-    document
-        .querySelectorAll("img")
-        .forEach((image) => {
-
-            if (image.complete) {
-
-                image.classList.add("loaded");
-
-            } else {
-
-                image.addEventListener(
-                    "load",
-                    () => {
-
-                        image.classList.add(
-                            "loaded"
-                        );
-
-                    }
-                );
-
-            }
-
-        });
-
-
-
-    // =====================================================
-    // 14. SMOOTH INTERNAL LINKS
-    // =====================================================
-
-    document
-        .querySelectorAll('a[href^="#"]')
-        .forEach((link) => {
-
-            link.addEventListener(
-                "click",
-                (event) => {
-
-                    const targetId =
-                        link.getAttribute("href");
-
-
-                    if (
-                        !targetId ||
-                        targetId === "#"
-                    ) {
-                        return;
-                    }
-
-
-                    const target =
-                        document.querySelector(
-                            targetId
-                        );
-
-
-                    if (!target) {
-                        return;
-                    }
-
-
-                    event.preventDefault();
-
-
-                    target.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
-                    });
-
-                }
-            );
-
-        });
 
 });
