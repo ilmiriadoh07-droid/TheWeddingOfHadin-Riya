@@ -1,444 +1,2350 @@
-<script>
 /* =========================================================
-   LUXURY WEDDING ANIMATION JAVASCRIPT
+   HADI & RIYA
+   LUXURY WEDDING INVITATION
+   FINAL STYLE.CSS
    ========================================================= */
 
-document.addEventListener("DOMContentLoaded", function () {
 
-  const body = document.body;
-  const cover = document.getElementById("cover");
-  const openButton = document.querySelector(".open-btn");
+/* =========================================================
+   01. GLOBAL / RESET
+   ========================================================= */
 
-  /* =======================================================
-     PAGE LOADING
-  ======================================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-  body.classList.add("page-loading");
+html {
+    scroll-behavior: smooth;
+}
 
-  setTimeout(() => {
+body {
+    overflow-x: hidden;
+    background: #f9f8f6;
+    color: #30271f;
+    font-family: "Montserrat", sans-serif;
+}
 
-    body.classList.remove("page-loading");
+body.no-scroll {
+    overflow: hidden;
+}
 
-    if (cover) {
-      cover.classList.add("loaded");
+img {
+    display: block;
+    width: 100%;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+a {
+    text-decoration: none;
+}
+
+button {
+    font-family: inherit;
+}
+
+
+/* =========================================================
+   02. COLOR VARIABLES
+   ========================================================= */
+
+:root {
+
+    --cream: #f9f8f6;
+    --cream-dark: #eee8dc;
+
+    --gold: #c5a059;
+    --gold-light: #e3c98b;
+    --gold-dark: #80622d;
+
+    --brown: #30271f;
+    --brown-light: #66584a;
+
+    --dark: #15110d;
+    --dark-2: #201912;
+
+    --white: #ffffff;
+
+    --shadow:
+        0 20px 60px rgba(50, 35, 20, .12);
+}
+
+
+/* =========================================================
+   03. CONTAINER
+   ========================================================= */
+
+.container {
+    width: min(1100px, 90%);
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   04. PAGE INTRO / LOADING
+   ========================================================= */
+
+body.page-loading {
+    overflow: hidden;
+}
+
+#page-loader {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #111;
+
+    color: white;
+
+    z-index: 100000;
+
+    transition:
+        opacity 1s ease,
+        visibility 1s ease;
+}
+
+#page-loader.hide {
+
+    opacity: 0;
+
+    visibility: hidden;
+}
+
+.loader-ring {
+
+    width: 50px;
+    height: 50px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid rgba(216,187,122,.25);
+
+    border-top-color:
+        var(--gold-light);
+
+    animation:
+        loaderSpin 1.2s linear infinite;
+}
+
+#page-loader p {
+
+    margin-top: 20px;
+
+    font-family:
+        "Great Vibes",
+        cursive;
+
+    font-size: 28px;
+
+    color:
+        var(--gold-light);
+}
+
+@keyframes loaderSpin {
+
+    to {
+        transform:
+            rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   05. COVER / OPENING
+   ========================================================= */
+
+#cover {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            rgba(15,10,5,.48),
+            rgba(15,10,5,.72)
+        ),
+        url("../img/cover.jpg")
+        center / cover no-repeat;
+
+    overflow: hidden;
+
+    isolation: isolate;
+
+    animation:
+        zoomBackground 15s infinite alternate ease-in-out,
+        coverFadeIn 1.4s ease both;
+}
+
+
+/* Cover light */
+
+#cover::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(255,255,255,.10),
+            transparent 45%
+        );
+
+    z-index: -1;
+
+    animation:
+        lightPulse 5s ease-in-out infinite;
+}
+
+
+/* Circle animation */
+
+#cover::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    border:
+        1px solid rgba(255,255,255,.35);
+
+    border-radius: 50%;
+
+    top: 50%;
+    left: 50%;
+
+    transform:
+        translate(-50%, -50%)
+        scale(.7);
+
+    animation:
+        circleReveal 3s ease-in-out infinite;
+
+    pointer-events: none;
+}
+
+
+/* Background zoom */
+
+@keyframes zoomBackground {
+
+    0% {
+        background-size: 100% auto;
     }
 
-  }, 100);
-
-
-  /* =======================================================
-     BUKA UNDANGAN
-  ======================================================= */
-
-  if (openButton && cover) {
-
-    openButton.addEventListener("click", function () {
-
-      // Efek sparkle ketika tombol ditekan
-      createBurstSparkles(
-        window.innerWidth / 2,
-        window.innerHeight / 2,
-        25
-      );
-
-      // Animasi cover
-      cover.classList.add("open");
-
-      // Buka scroll
-      document.body.classList.remove("no-scroll");
-
-      // Jika sebelumnya memakai class lock-scroll
-      document.body.classList.remove("lock-scroll");
-
-      // Mulai partikel
-      setTimeout(() => {
-        startParticles();
-      }, 500);
-
-      // Aktifkan reveal pertama
-      setTimeout(() => {
-        revealElements();
-      }, 800);
-
-    });
-
-  }
-
-
-  /* =======================================================
-     SCROLL REVEAL
-  ======================================================= */
-
-  const revealElementsList = document.querySelectorAll(
-    ".reveal, .reveal-left, .reveal-right, .reveal-zoom"
-  );
-
-  const observer = new IntersectionObserver(
-    function (entries) {
-
-      entries.forEach(function (entry) {
-
-        if (entry.isIntersecting) {
-
-          entry.target.classList.add("active");
-
-          // Jangan diulang
-          observer.unobserve(entry.target);
-        }
-
-      });
-
-    },
-    {
-      threshold: 0.15
+    100% {
+        background-size: 115% auto;
     }
-  );
+}
 
-  revealElementsList.forEach(function (element) {
-    observer.observe(element);
-  });
 
+/* Cover fade */
 
-  /* =======================================================
-     SECTION VISIBLE
-  ======================================================= */
+@keyframes coverFadeIn {
 
-  const sections = document.querySelectorAll("section");
-
-  const sectionObserver = new IntersectionObserver(
-    function (entries) {
-
-      entries.forEach(function (entry) {
-
-        if (entry.isIntersecting) {
-
-          entry.target.classList.add("visible");
-
-        }
-
-      });
-
-    },
-    {
-      threshold: 0.2
-    }
-  );
-
-  sections.forEach(function (section) {
-    sectionObserver.observe(section);
-  });
-
-
-  /* =======================================================
-     PARALLAX
-  ======================================================= */
-
-  const parallaxElements =
-    document.querySelectorAll(".parallax");
-
-  window.addEventListener("scroll", function () {
-
-    const scrollY = window.scrollY;
-
-    parallaxElements.forEach(function (element) {
-
-      const speed =
-        parseFloat(element.dataset.speed) || 0.15;
-
-      element.style.transform =
-        "translateY(" + (scrollY * speed) + "px)";
-
-    });
-
-  });
-
-
-  /* =======================================================
-     GOLD PARTICLES
-  ======================================================= */
-
-  let particleStarted = false;
-
-  function startParticles() {
-
-    if (particleStarted) return;
-
-    particleStarted = true;
-
-    setInterval(function () {
-
-      createParticle();
-
-    }, 900);
-
-  }
-
-
-  function createParticle() {
-
-    const particle =
-      document.createElement("div");
-
-    particle.className =
-      "gold-particle";
-
-    const startX =
-      Math.random() * window.innerWidth;
-
-    const duration =
-      6 + Math.random() * 7;
-
-    const moveX =
-      (Math.random() - 0.5) * 150;
-
-    particle.style.left =
-      startX + "px";
-
-    particle.style.bottom =
-      "-10px";
-
-    particle.style.animationDuration =
-      duration + "s";
-
-    particle.style.setProperty(
-      "--move-x",
-      moveX + "px"
-    );
-
-    document.body.appendChild(particle);
-
-    setTimeout(function () {
-
-      particle.remove();
-
-    }, duration * 1000);
-
-  }
-
-
-  /* =======================================================
-     SPARKLE
-  ======================================================= */
-
-  function createSparkle() {
-
-    const sparkle =
-      document.createElement("div");
-
-    sparkle.className =
-      "sparkle";
-
-    sparkle.style.left =
-      Math.random() * window.innerWidth + "px";
-
-    sparkle.style.top =
-      Math.random() * window.innerHeight + "px";
-
-    document.body.appendChild(sparkle);
-
-    setTimeout(function () {
-
-      sparkle.remove();
-
-    }, 1500);
-
-  }
-
-
-  setInterval(function () {
-
-    if (!cover || cover.classList.contains("open")) {
-
-      createSparkle();
-
+    from {
+        opacity: 0;
     }
 
-  }, 1800);
+    to {
+        opacity: 1;
+    }
+}
 
 
-  /* =======================================================
-     SPARKLE BURST
-  ======================================================= */
+/* Light pulse */
 
-  function createBurstSparkles(x, y, amount) {
+@keyframes lightPulse {
 
-    for (let i = 0; i < amount; i++) {
+    0%,100% {
 
-      const sparkle =
-        document.createElement("div");
+        opacity: .3;
 
-      sparkle.className =
-        "sparkle";
-
-      sparkle.style.left =
-        x + (Math.random() - 0.5) * 250 + "px";
-
-      sparkle.style.top =
-        y + (Math.random() - 0.5) * 250 + "px";
-
-      sparkle.style.animationDelay =
-        Math.random() * 0.5 + "s";
-
-      document.body.appendChild(sparkle);
-
-      setTimeout(function () {
-
-        sparkle.remove();
-
-      }, 2000);
-
+        transform:
+            scale(1);
     }
 
-  }
+    50% {
+
+        opacity: .8;
+
+        transform:
+            scale(1.1);
+    }
+}
 
 
-  /* =======================================================
-     REVEAL ELEMENTS
-  ======================================================= */
+/* Circle reveal */
 
-  function revealElements() {
+@keyframes circleReveal {
 
-    revealElementsList.forEach(function (element) {
+    0% {
 
-      const rect =
-        element.getBoundingClientRect();
+        opacity: 0;
 
-      if (rect.top < window.innerHeight) {
+        transform:
+            translate(-50%, -50%)
+            scale(.7);
+    }
 
-        element.classList.add("active");
+    50% {
+        opacity: .6;
+    }
 
-      }
+    100% {
 
-    });
+        opacity: 0;
 
-  }
-
-
-  /* =======================================================
-     MOUSE PARALLAX DESKTOP
-  ======================================================= */
-
-  document.addEventListener("mousemove", function (event) {
-
-    const elements =
-      document.querySelectorAll(
-        ".mouse-parallax"
-      );
-
-    elements.forEach(function (element) {
-
-      const strength =
-        parseFloat(element.dataset.strength) || 10;
-
-      const x =
-        (window.innerWidth / 2 - event.clientX)
-        / window.innerWidth
-        * strength;
-
-      const y =
-        (window.innerHeight / 2 - event.clientY)
-        / window.innerHeight
-        * strength;
-
-      element.style.transform =
-        "translate(" + x + "px," + y + "px)";
-
-    });
-
-  });
+        transform:
+            translate(-50%, -50%)
+            scale(2);
+    }
+}
 
 
-  /* =======================================================
-     IMAGE TILT
-  ======================================================= */
+/* =========================================================
+   06. COVER CONTENT
+   ========================================================= */
 
-  document.querySelectorAll(".tilt").forEach(function (element) {
+.cover-content {
 
-    element.addEventListener("mousemove", function (event) {
+    position: relative;
 
-      const rect =
-        element.getBoundingClientRect();
+    width:
+        min(700px, 90%);
 
-      const x =
-        event.clientX - rect.left;
+    z-index: 2;
+}
 
-      const y =
-        event.clientY - rect.top;
+.small-title {
 
-      const centerX =
-        rect.width / 2;
+    letter-spacing: 5px;
 
-      const centerY =
-        rect.height / 2;
+    font-size: 11px;
 
-      const rotateX =
-        ((y - centerY) / centerY) * -4;
+    font-weight: 500;
 
-      const rotateY =
-        ((x - centerX) / centerX) * 4;
+    margin-bottom: 18px;
+}
 
-      element.style.transform =
-        "perspective(700px) rotateX(" +
-        rotateX +
-        "deg) rotateY(" +
-        rotateY +
-        "deg) scale(1.02)";
+.cover-date {
 
-    });
+    font-family:
+        "Cinzel",
+        serif;
+
+    font-weight: 400;
+
+    font-size: 14px;
+
+    letter-spacing: 5px;
+
+    color:
+        var(--gold-light);
+
+    margin-bottom: 10px;
+}
+
+.cover-content h1 {
+
+    font-family:
+        "Great Vibes",
+        cursive;
+
+    font-size:
+        clamp(70px, 13vw, 130px);
+
+    font-weight: 400;
+
+    line-height: 1;
+
+    margin:
+        10px 0 25px;
+
+    text-shadow:
+        0 5px 30px rgba(0,0,0,.35);
+}
+
+.cover-content h1 span {
+    color:
+        var(--gold-light);
+}
+
+.cover-description {
+
+    max-width:
+        480px;
+
+    margin:
+        0 auto 35px;
+
+    line-height:
+        1.9;
+
+    font-size:
+        13px;
+
+    font-weight:
+        300;
+
+    color:
+        rgba(255,255,255,.88);
+}
 
 
-    element.addEventListener("mouseleave", function () {
+/* =========================================================
+   07. COVER TEXT ANIMATION
+   ========================================================= */
 
-      element.style.transform =
-        "perspective(700px) rotateX(0) rotateY(0) scale(1)";
+#cover .small-title,
+#cover .cover-date,
+#cover h1,
+#cover .cover-description,
+#cover .open-btn {
 
-    });
+    opacity: 0;
 
-  });
+    transform:
+        translateY(30px);
+}
+
+#cover.loaded .small-title {
+
+    animation:
+        luxuryTextIn 1s .2s ease forwards;
+}
+
+#cover.loaded .cover-date {
+
+    animation:
+        luxuryTextIn 1s .4s ease forwards;
+}
+
+#cover.loaded h1 {
+
+    animation:
+        luxuryTextIn 1s .7s ease forwards;
+}
+
+#cover.loaded .cover-description {
+
+    animation:
+        luxuryTextIn 1s .9s ease forwards;
+}
+
+#cover.loaded .open-btn {
+
+    animation:
+        luxuryTextIn 1s 1.2s ease forwards,
+        buttonGlow 2.5s 2.2s ease-in-out infinite;
+}
+
+@keyframes luxuryTextIn {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(30px);
+
+        filter:
+            blur(8px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+        filter:
+            blur(0);
+    }
+}
 
 
-  /* =======================================================
-     MUSIC BUTTON
-  ======================================================= */
+/* =========================================================
+   08. OPEN BUTTON
+   ========================================================= */
 
-  const musicButton =
-    document.querySelector(".music-btn");
+.open-btn {
 
-  const music =
-    document.querySelector("audio");
+    position: relative;
 
-  if (musicButton && music) {
+    overflow: hidden;
 
-    musicButton.addEventListener("click", function () {
+    border:
+        1px solid rgba(255,255,255,.55);
 
-      if (music.paused) {
+    background:
+        rgba(255,255,255,.08);
 
-        music.play();
+    color: white;
 
-        musicButton.classList.add("playing");
+    padding:
+        15px 32px;
 
-      } else {
+    border-radius:
+        100px;
 
-        music.pause();
+    font-size:
+        11px;
 
-        musicButton.classList.remove("playing");
+    letter-spacing:
+        3px;
 
-      }
+    cursor: pointer;
 
-    });
+    backdrop-filter:
+        blur(10px);
 
-  }
+    transition:
+        transform .4s ease,
+        background .4s ease,
+        box-shadow .4s ease;
+}
+
+.open-btn span {
+
+    position: relative;
+
+    z-index: 2;
+}
+
+.open-btn::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -120%;
+
+    width: 60%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.7),
+            transparent
+        );
+
+    transform:
+        skewX(-25deg);
+
+    animation:
+        buttonShine 3.5s infinite;
+}
+
+.open-btn:hover {
+
+    transform:
+        translateY(-4px)
+        scale(1.04);
+
+    background:
+        rgba(255,255,255,.16);
+
+    box-shadow:
+        0 10px 30px rgba(255,255,255,.2);
+}
+
+@keyframes buttonShine {
+
+    0% {
+        left: -120%;
+    }
+
+    40%,100% {
+        left: 150%;
+    }
+}
+
+@keyframes buttonGlow {
+
+    0%,100% {
+
+        box-shadow:
+            0 0 0
+            rgba(255,255,255,0);
+    }
+
+    50% {
+
+        box-shadow:
+            0 0 25px
+            rgba(255,255,255,.35);
+    }
+}
 
 
-  /* =======================================================
-     PREVENT IMAGE DRAG
-  ======================================================= */
+/* =========================================================
+   09. COVER EXIT
+   ========================================================= */
 
-  document.querySelectorAll("img").forEach(function (img) {
+#cover.open {
 
-    img.setAttribute("draggable", "false");
+    transform:
+        translateY(-100%);
 
-  });
+    opacity: 0;
 
-});
-</script>
+    transition:
+        transform 1.2s cubic-bezier(.77,0,.175,1),
+        opacity .8s ease;
+
+    pointer-events:
+        none;
+}
+
+
+/* =========================================================
+   10. SCROLL HINT
+   ========================================================= */
+
+.scroll-hint {
+
+    position: absolute;
+
+    bottom: 30px;
+
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    font-size: 8px;
+
+    letter-spacing: 3px;
+
+    opacity: .7;
+}
+
+.scroll-hint span {
+
+    display: block;
+
+    width: 1px;
+    height: 35px;
+
+    background:
+        linear-gradient(
+            white,
+            transparent
+        );
+
+    margin:
+        0 auto 8px;
+
+    animation:
+        scrollLine 2s infinite;
+}
+
+@keyframes scrollLine {
+
+    0%,100% {
+
+        transform:
+            scaleY(.4);
+
+        transform-origin:
+            top;
+    }
+
+    50% {
+
+        transform:
+            scaleY(1);
+    }
+}
+
+
+/* =========================================================
+   11. MAIN CONTENT
+   ========================================================= */
+
+#main-content {
+
+    position: relative;
+
+    background:
+        var(--cream);
+}
+
+
+/* =========================================================
+   12. SECTION
+   ========================================================= */
+
+section {
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+section::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 50%;
+
+    width: 0;
+    height: 1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--gold),
+            transparent
+        );
+
+    transform:
+        translateX(-50%);
+
+    transition:
+        width 1.5s ease;
+}
+
+section.visible::before {
+    width: 80%;
+}
+
+
+/* =========================================================
+   13. HERO
+   ========================================================= */
+
+.hero-section {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    padding:
+        100px 0;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #fff,
+            var(--cream)
+        );
+}
+
+.decorative-circle {
+
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    border:
+        1px solid rgba(176,138,69,.12);
+
+    border-radius: 50%;
+
+    top: 50%;
+    left: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    animation:
+        slowRotate 30s linear infinite;
+}
+
+.decorative-circle::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 30px;
+
+    border:
+        1px solid rgba(176,138,69,.08);
+
+    border-radius: 50%;
+}
+
+@keyframes slowRotate {
+
+    to {
+
+        transform:
+            translate(-50%, -50%)
+            rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   14. TYPOGRAPHY
+   ========================================================= */
+
+.section-label {
+
+    font-size: 10px;
+
+    letter-spacing: 4px;
+
+    color:
+        var(--gold-dark);
+
+    margin-bottom: 15px;
+}
+
+.script-title {
+
+    font-family:
+        "Great Vibes",
+        cursive;
+
+    font-weight: 400;
+
+    font-size:
+        clamp(50px, 8vw, 85px);
+
+    line-height: 1;
+
+    color:
+        var(--brown);
+}
+
+
+/* =========================================================
+   15. GOLD LINE
+   ========================================================= */
+
+.gold-line {
+
+    position: relative;
+}
+
+.gold-line::after {
+
+    content: "";
+
+    display: block;
+
+    width: 0;
+
+    height: 1px;
+
+    margin:
+        18px auto 0;
+
+    background:
+        var(--gold);
+
+    transition:
+        width 1.2s ease;
+}
+
+.gold-line.active::after {
+    width: 80px;
+}
+
+
+/* =========================================================
+   16. HERO TEXT
+   ========================================================= */
+
+.hero-text {
+
+    max-width: 500px;
+
+    margin:
+        35px auto;
+
+    color:
+        var(--brown-light);
+
+    font-size: 13px;
+
+    line-height: 2;
+}
+
+.hero-date {
+
+    display: inline-block;
+
+    padding:
+        10px 25px;
+
+    border-top:
+        1px solid var(--gold);
+
+    border-bottom:
+        1px solid var(--gold);
+
+    color:
+        var(--gold-dark);
+
+    font-family:
+        "Cinzel",
+        serif;
+
+    font-size: 12px;
+
+    letter-spacing: 4px;
+}
+
+
+/* =========================================================
+   17. SECTION HEADING
+   ========================================================= */
+
+.section-heading {
+
+    text-align: center;
+
+    margin-bottom: 60px;
+}
+
+.section-heading span {
+
+    display: block;
+
+    color:
+        var(--gold-dark);
+
+    letter-spacing: 4px;
+
+    font-size: 9px;
+
+    margin-bottom: 12px;
+}
+
+.section-heading h2 {
+
+    font-family:
+        "Cinzel",
+        serif;
+
+    font-size:
+        clamp(25px, 5vw, 42px);
+
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   18. COUPLE
+   ========================================================= */
+
+.couple-section {
+
+    padding:
+        120px 0;
+
+    background:
+        #f1ece3;
+}
+
+.couple-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 100px 1fr;
+
+    align-items: center;
+
+    gap: 30px;
+}
+
+.person-card {
+
+    text-align: center;
+}
+
+.photo-frame {
+
+    position: relative;
+
+    width:
+        min(300px, 100%);
+
+    aspect-ratio:
+        3 / 4;
+
+    margin:
+        0 auto 30px;
+
+    padding: 8px;
+
+    border:
+        1px solid rgba(176,138,69,.5);
+
+    background:
+        white;
+
+    box-shadow:
+        var(--shadow);
+
+    overflow:
+        hidden;
+}
+
+.photo-frame::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 14px;
+
+    border:
+        1px solid rgba(176,138,69,.35);
+
+    z-index: 2;
+
+    pointer-events: none;
+}
+
+.photo-frame img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+        transform 1s ease,
+        filter 1s ease;
+}
+
+.photo-frame:hover img {
+
+    transform:
+        scale(1.05);
+}
+
+.person-role {
+
+    font-size: 9px;
+
+    letter-spacing: 3px;
+
+    color:
+        var(--gold-dark);
+
+    margin-bottom: 10px;
+}
+
+.person-card h3 {
+
+    font-family:
+        "Great Vibes",
+        cursive;
+
+    font-size: 38px;
+
+    font-weight: 400;
+
+    margin-bottom: 20px;
+}
+
+.parents {
+
+    color:
+        var(--brown-light);
+
+    font-size: 11px;
+
+    line-height: 1.8;
+}
+
+.couple-and {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+.couple-and span {
+
+    width: 65px;
+    height: 65px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px solid var(--gold);
+
+    border-radius: 50%;
+
+    color:
+        var(--gold-dark);
+
+    font-family:
+        "Great Vibes",
+        cursive;
+
+    font-size: 35px;
+}
+
+
+/* =========================================================
+   19. COUNTDOWN
+   ========================================================= */
+
+.countdown-section {
+
+    padding:
+        110px 0;
+
+    text-align: center;
+
+    background:
+        var(--dark-2);
+
+    color: white;
+}
+
+.countdown-section .section-label {
+    color:
+        var(--gold-light);
+}
+
+.countdown-section .script-title {
+    color: white;
+}
+
+.countdown {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    max-width:
+        700px;
+
+    margin:
+        60px auto 0;
+
+    border-top:
+        1px solid rgba(216,187,122,.35);
+
+    border-bottom:
+        1px solid rgba(216,187,122,.35);
+}
+
+.countdown-item {
+
+    padding:
+        30px 10px;
+
+    border-right:
+        1px solid rgba(216,187,122,.2);
+
+    opacity: 0;
+
+    transform:
+        translateY(20px);
+
+    animation:
+        countdownIn .8s ease forwards;
+}
+
+.countdown-item:last-child {
+    border-right: none;
+}
+
+.countdown-item:nth-child(1) {
+    animation-delay: .2s;
+}
+
+.countdown-item:nth-child(2) {
+    animation-delay: .4s;
+}
+
+.countdown-item:nth-child(3) {
+    animation-delay: .6s;
+}
+
+.countdown-item:nth-child(4) {
+    animation-delay: .8s;
+}
+
+.countdown-item strong {
+
+    display: block;
+
+    font-family:
+        "Cinzel",
+        serif;
+
+    font-size:
+        clamp(28px, 6vw, 45px);
+
+    font-weight: 400;
+
+    color:
+        var(--gold-light);
+}
+
+.countdown-item span {
+
+    display: block;
+
+    margin-top: 8px;
+
+    font-size: 8px;
+
+    letter-spacing: 3px;
+
+    opacity: .7;
+}
+
+@keyframes countdownIn {
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* =========================================================
+   20. EVENT
+   ========================================================= */
+
+.event-section {
+
+    padding:
+        120px 0;
+
+    background:
+        var(--cream);
+}
+
+.event-card {
+
+    max-width:
+        650px;
+
+    margin:
+        auto;
+
+    text-align:
+        center;
+
+    padding:
+        60px 40px;
+
+    background:
+        rgba(255,255,255,.65);
+
+    border:
+        1px solid rgba(176,138,69,.35);
+
+    box-shadow:
+        var(--shadow);
+
+    backdrop-filter:
+        blur(10px);
+}
+
+.event-icon {
+
+    font-size: 30px;
+
+    color:
+        var(--gold);
+
+    margin-bottom: 20px;
+
+    animation:
+        floating 4s ease-in-out infinite;
+}
+
+.event-type {
+
+    font-size: 10px;
+
+    letter-spacing: 4px;
+
+    color:
+        var(--gold-dark);
+
+    margin-bottom: 15px;
+}
+
+.event-card h3 {
+
+    font-family:
+        "Cinzel",
+        serif;
+
+    font-size: 20px;
+
+    font-weight: 500;
+}
+
+.event-divider {
+
+    width: 60px;
+
+    height: 1px;
+
+    background:
+        var(--gold);
+
+    margin:
+        25px auto;
+}
+
+.event-time {
+
+    font-size: 13px;
+
+    margin-bottom: 25px;
+}
+
+.event-card h4 {
+
+    font-family:
+        "Great Vibes",
+        cursive;
+
+    font-size: 38px;
+
+    font-weight: 400;
+
+    color:
+        var(--gold-dark);
+
+    margin-bottom: 15px;
+}
+
+.event-address {
+
+    max-width: 500px;
+
+    margin:
+        auto;
+
+    font-size: 11px;
+
+    line-height: 1.9;
+
+    color:
+        var(--brown-light);
+}
+
+
+/* =========================================================
+   21. BUTTONS
+   ========================================================= */
+
+.map-btn,
+.rsvp-btn {
+
+    display:
+        inline-block;
+
+    margin-top:
+        30px;
+
+    padding:
+        14px 25px;
+
+    border:
+        1px solid var(--gold);
+
+    color:
+        var(--gold-dark);
+
+    font-size:
+        9px;
+
+    letter-spacing:
+        2px;
+
+    transition:
+        .4s ease;
+}
+
+.map-btn:hover,
+.rsvp-btn:hover {
+
+    background:
+        var(--gold);
+
+    color:
+        white;
+
+    transform:
+        translateY(-3px);
+}
+
+
+/* =========================================================
+   22. GALLERY
+   ========================================================= */
+
+.gallery-section {
+
+    padding:
+        120px 0;
+
+    background:
+        #f1ece3;
+}
+
+.gallery-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 15px;
+}
+
+.gallery-item {
+
+    overflow:
+        hidden;
+
+    aspect-ratio:
+        3 / 4;
+
+    background:
+        #ddd;
+}
+
+.gallery-item img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+        transform 1s ease,
+        filter 1s ease;
+}
+
+.gallery-item:hover img {
+
+    transform:
+        scale(1.07);
+
+    filter:
+        brightness(1.05);
+}
+
+
+/* =========================================================
+   23. QUOTE
+   ========================================================= */
+
+.quote-section {
+
+    padding:
+        130px 0;
+
+    text-align:
+        center;
+
+    background:
+        var(--dark-2);
+
+    color: white;
+}
+
+.quote-decoration {
+
+    color:
+        var(--gold-light);
+
+    font-family:
+        "Great Vibes",
+        cursive;
+
+    font-size:
+        70px;
+
+    line-height:
+        .5;
+}
+
+.quote-section blockquote {
+
+    max-width:
+        700px;
+
+    margin:
+        30px auto;
+
+    font-family:
+        "Cinzel",
+        serif;
+
+    font-size:
+        clamp(15px, 3vw, 21px);
+
+    line-height:
+        2;
+
+    font-weight:
+        400;
+
+    color:
+        rgba(255,255,255,.9);
+}
+
+.quote-section .gold-line::after {
+
+    background:
+        var(--gold-light);
+}
+
+.quote-section p {
+
+    margin-top:
+        25px;
+
+    font-family:
+        "Great Vibes",
+        cursive;
+
+    font-size:
+        30px;
+
+    color:
+        var(--gold-light);
+}
+
+
+/* =========================================================
+   24. RSVP
+   ========================================================= */
+
+.rsvp-section {
+
+    padding:
+        120px 0;
+
+    text-align:
+        center;
+
+    background:
+        var(--cream);
+}
+
+.rsvp-text {
+
+    max-width:
+        600px;
+
+    margin:
+        auto;
+
+    font-size:
+        12px;
+
+    line-height:
+        2;
+
+    color:
+        var(--brown-light);
+}
+
+.rsvp-btn {
+
+    background:
+        var(--brown);
+
+    color:
+        white;
+
+    border-color:
+        var(--brown);
+}
+
+.rsvp-btn:hover {
+
+    background:
+        var(--gold);
+
+    border-color:
+        var(--gold);
+}
+
+
+/* =========================================================
+   25. CLOSING
+   ========================================================= */
+
+.closing-section {
+
+    min-height:
+        80vh;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    text-align:
+        center;
+
+    color:
+        white;
+
+    background:
+        linear-gradient(
+            rgba(20,13,8,.5),
+            rgba(20,13,8,.75)
+        ),
+        url("../img/cover.jpg")
+        center / cover no-repeat;
+}
+
+.closing-overlay {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    background:
+        radial-gradient(
+            circle at center,
+            transparent,
+            rgba(0,0,0,.35)
+        );
+}
+
+.closing-section .container {
+
+    position:
+        relative;
+
+    z-index:
+        2;
+}
+
+.closing-section .section-label {
+    color:
+        var(--gold-light);
+}
+
+.closing-section .script-title {
+    color: white;
+}
+
+.closing-text {
+
+    max-width:
+        450px;
+
+    margin:
+        30px auto;
+
+    font-size:
+        12px;
+
+    line-height:
+        2;
+}
+
+.closing-section .gold-line::after {
+    background:
+        var(--gold-light);
+}
+
+.closing-date {
+
+    margin-top:
+        25px;
+
+    font-family:
+        "Cinzel",
+        serif;
+
+    font-size:
+        12px;
+
+    letter-spacing:
+        5px;
+
+    color:
+        var(--gold-light);
+}
+
+
+/* =========================================================
+   26. MUSIC BUTTON
+   ========================================================= */
+
+.music-btn {
+
+    position:
+        fixed;
+
+    right:
+        20px;
+
+    bottom:
+        20px;
+
+    width:
+        48px;
+
+    height:
+        48px;
+
+    border:
+        1px solid rgba(176,138,69,.6);
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(255,255,255,.85);
+
+    color:
+        var(--gold-dark);
+
+    font-size:
+        20px;
+
+    cursor:
+        pointer;
+
+    z-index:
+        900;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,.12);
+
+    backdrop-filter:
+        blur(10px);
+
+    transition:
+        transform .4s ease,
+        box-shadow .4s ease;
+}
+
+.music-btn:hover {
+
+    transform:
+        scale(1.1);
+
+    box-shadow:
+        0 0 25px
+        rgba(197,160,89,.45);
+}
+
+.music-btn.playing {
+
+    animation:
+        spin 4s linear infinite,
+        musicGlow 2s ease-in-out infinite;
+}
+
+@keyframes spin {
+
+    to {
+        transform:
+            rotate(360deg);
+    }
+}
+
+@keyframes musicGlow {
+
+    0%,100% {
+
+        box-shadow:
+            0 4px 12px
+            rgba(0,0,0,.15);
+    }
+
+    50% {
+
+        box-shadow:
+            0 0 25px
+            rgba(197,160,89,.65);
+    }
+}
+
+
+/* =========================================================
+   27. SCROLL REVEAL
+   ========================================================= */
+
+.reveal {
+
+    opacity: 0;
+
+    transform:
+        translateY(60px)
+        scale(.97);
+
+    filter:
+        blur(6px);
+
+    transition:
+        opacity 1s ease,
+        transform 1s cubic-bezier(.25,1,.5,1),
+        filter 1s ease;
+}
+
+.reveal.active {
+
+    opacity: 1;
+
+    transform:
+        translateY(0)
+        scale(1);
+
+    filter:
+        blur(0);
+}
+
+
+/* =========================================================
+   28. REVEAL LEFT
+   ========================================================= */
+
+.reveal-left {
+
+    opacity: 0;
+
+    transform:
+        translateX(-70px);
+
+    transition:
+        all 1s cubic-bezier(.25,1,.5,1);
+}
+
+.reveal-left.active {
+
+    opacity: 1;
+
+    transform:
+        translateX(0);
+}
+
+
+/* =========================================================
+   29. REVEAL RIGHT
+   ========================================================= */
+
+.reveal-right {
+
+    opacity: 0;
+
+    transform:
+        translateX(70px);
+
+    transition:
+        all 1s cubic-bezier(.25,1,.5,1);
+}
+
+.reveal-right.active {
+
+    opacity: 1;
+
+    transform:
+        translateX(0);
+}
+
+
+/* =========================================================
+   30. REVEAL ZOOM
+   ========================================================= */
+
+.reveal-zoom {
+
+    opacity: 0;
+
+    transform:
+        scale(.75);
+
+    filter:
+        blur(8px);
+
+    transition:
+        opacity 1.2s ease,
+        transform 1.2s cubic-bezier(.25,1,.5,1),
+        filter 1.2s ease;
+}
+
+.reveal-zoom.active {
+
+    opacity: 1;
+
+    transform:
+        scale(1);
+
+    filter:
+        blur(0);
+}
+
+
+/* =========================================================
+   31. DELAY
+   ========================================================= */
+
+.delay-1 {
+    transition-delay: .15s;
+}
+
+.delay-2 {
+    transition-delay: .3s;
+}
+
+.delay-3 {
+    transition-delay: .45s;
+}
+
+.delay-4 {
+    transition-delay: .6s;
+}
+
+.delay-5 {
+    transition-delay: .75s;
+}
+
+
+/* =========================================================
+   32. GOLD PARTICLES
+   ========================================================= */
+
+.gold-particle {
+
+    position:
+        fixed;
+
+    width:
+        4px;
+
+    height:
+        4px;
+
+    border-radius:
+        50%;
+
+    background:
+        #c5a059;
+
+    pointer-events:
+        none;
+
+    z-index:
+        50;
+
+    opacity:
+        0;
+
+    animation:
+        particleFloat linear forwards;
+}
+
+@keyframes particleFloat {
+
+    0% {
+
+        opacity:
+            0;
+
+        transform:
+            translateY(0)
+            scale(.3);
+    }
+
+    15% {
+        opacity: .8;
+    }
+
+    80% {
+        opacity: .6;
+    }
+
+    100% {
+
+        opacity:
+            0;
+
+        transform:
+            translateY(-100vh)
+            translateX(var(--move-x))
+            scale(1);
+    }
+}
+
+
+/* =========================================================
+   33. SPARKLE
+   ========================================================= */
+
+.sparkle {
+
+    position:
+        fixed;
+
+    width:
+        5px;
+
+    height:
+        5px;
+
+    background:
+        #fff;
+
+    border-radius:
+        50%;
+
+    pointer-events:
+        none;
+
+    z-index:
+        999;
+
+    animation:
+        sparkleAnimation 1.5s ease forwards;
+}
+
+@keyframes sparkleAnimation {
+
+    0% {
+
+        opacity:
+            0;
+
+        transform:
+            scale(0);
+    }
+
+    30% {
+
+        opacity:
+            1;
+
+        transform:
+            scale(1.5);
+
+        box-shadow:
+            0 0 10px #fff,
+            0 0 20px #c5a059;
+    }
+
+    100% {
+
+        opacity:
+            0;
+
+        transform:
+            scale(0);
+    }
+}
+
+
+/* =========================================================
+   34. FLOATING ELEMENT
+   ========================================================= */
+
+.float {
+
+    animation:
+        floating 4s ease-in-out infinite;
+}
+
+@keyframes floating {
+
+    0%,100% {
+
+        transform:
+            translateY(0);
+    }
+
+    50% {
+
+        transform:
+            translateY(-10px);
+    }
+}
+
+
+/* =========================================================
+   35. PARALLAX
+   ========================================================= */
+
+.parallax {
+
+    will-change:
+        transform;
+
+    transition:
+        transform .15s linear;
+}
+
+
+/* =========================================================
+   36. IMAGE GENERAL EFFECT
+   ========================================================= */
+
+.container img {
+
+    transition:
+        transform 1s ease,
+        filter 1s ease;
+}
+
+
+/* =========================================================
+   37. MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .container {
+        width:
+            88%;
+    }
+
+    #cover {
+        background-position:
+            center center;
+    }
+
+    .cover-content h1 {
+
+        font-size:
+            70px;
+    }
+
+    .couple-grid {
+
+        grid-template-columns:
+            1fr;
+
+        gap:
+            45px;
+    }
+
+    .couple-and {
+
+        order:
+            2;
+    }
+
+    .person-card:first-child {
+
+        order:
+            1;
+    }
+
+    .person-card:last-child {
+
+        order:
+            3;
+    }
+
+    .couple-and span {
+
+        width:
+            55px;
+
+        height:
+            55px;
+
+        font-size:
+            30px;
+    }
+
+    .countdown {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .countdown-item:nth-child(2) {
+
+        border-right:
+            none;
+    }
+
+    .countdown-item:nth-child(1),
+    .countdown-item:nth-child(2) {
+
+        border-bottom:
+            1px solid rgba(216,187,122,.2);
+    }
+
+    .gallery-grid {
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .gallery-item:last-child {
+
+        grid-column:
+            1 / -1;
+
+        max-width:
+            70%;
+
+        margin:
+            auto;
+    }
+
+    .event-card {
+
+        padding:
+            45px 25px;
+    }
+
+    .event-card h4 {
+
+        font-size:
+            34px;
+    }
+}
+
+
+/* =========================================================
+   38. SMALL PHONE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+    .cover-content h1 {
+
+        font-size:
+            60px;
+    }
+
+    .cover-description {
+
+        font-size:
+            11px;
+
+        padding:
+            0 10px;
+    }
+
+    .gallery-grid {
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .gallery-item:last-child {
+
+        max-width:
+            100%;
+    }
+
+    .script-title {
+
+        font-size:
+            55px;
+    }
+
+    .event-card {
+
+        padding:
+            40px 20px;
+    }
+}
+
+
+/* =========================================================
+   39. REDUCE MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration:
+            .01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        scroll-behavior:
+            auto !important;
+
+        transition-duration:
+            .01ms !important;
+    }
+}
